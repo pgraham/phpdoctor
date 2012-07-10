@@ -37,7 +37,7 @@ require('sourceWriter.php');
  *
  * @package PHPDoctor\Doclets\Zeptech
  */
-class Zeptech extends Doclet {
+class Html5 extends Doclet {
 
 	/** A reference to the root doc.
 	 *
