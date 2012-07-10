@@ -36,7 +36,7 @@ class HTMLWriter
 	 *
 	 * @var str[][]
 	 */
-	protected $_sections = null;
+	protected $_sections = array();
 
 	/** The directory structure depth. Used to calculate relative paths.
 	 *
@@ -134,16 +134,16 @@ class HTMLWriter
 	private function _shellHeader($path, $package = null) {
 		$output = "<body>\n";
 
-    $output .= "<section id=packages>\n";
+    $output .= "<nav id=packages>\n";
     $output .= $this->_packages();
-    $output .= "</section>\n";
+    $output .= "</nav>\n";
 
-    $output .= "<section id=all-items>\n";
+    $output .= "<nav id=all-items>\n";
     $output .= $this->_allItems($package);
-    $output .= "</section>\n";
+    $output .= "</nav>\n";
 
-    $output .= "<section id=content>\n";
 		$output .= $this->_nav($path);
+    $output .= "<section id=content>\n";
 
 		return $output;
 	}
@@ -155,7 +155,7 @@ class HTMLWriter
 
   private function _allItems($package = null) {
     $allItemsGenerator = new packageFrameWriter($this->_doclet);
-    return $allItemsGenerator->generate($package);
+    return $allItemsGenerator->generate($this->_depth, $package);
   }
 	
 	/** Build the HTML shell footer. Includes the end of the <body> section, and
@@ -165,8 +165,7 @@ class HTMLWriter
 	 */
 	function _shellFooter($path)
     {
-		$output = $this->_nav($path);
-    $output .= "</section>\n";
+    $output = "</section>\n";
 		$output .= '<footer id="footer">'.$this->_doclet->bottom().'</footer>'."\n\n";
 		$output .= "</body>\n\n";
 		return $output;
@@ -176,10 +175,11 @@ class HTMLWriter
 	 *
 	 * @return str
 	 */
-	function _nav($path)
-    {
-		$output = '<div class="header">'."\n";
-		$output .= '<h1>'.$this->_doclet->getHeader()."</h1>\n";
+	function _nav($path) {
+    $thisClass = strtolower(get_class($this));
+
+		$output = "<nav id=main-nav>\n";
+		$output .= "<h1>{$this->_doclet->getHeader()}</h1>\n";
 		if ($this->_sections) {
       $output .= "<ul>\n";
 			foreach ($this->_sections as $section) {
@@ -195,9 +195,7 @@ class HTMLWriter
 			}
             $output .= "</ul>\n";
 		}
-		$output .= "</div>\n\n";
 
-    $thisClass = strtolower(get_class($this));
 
 		if ($thisClass == 'classwriter') {
 			$output .= '<div class="small_links">'."\n";
@@ -215,6 +213,7 @@ class HTMLWriter
 			$output .= 'Detail: <a href="#detail_global">Global</a>'."\n";
 			$output .= "</div>\n";
 		}
+		$output .= "</nav>\n\n";
 
 		return $output;
 	}

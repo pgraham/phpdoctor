@@ -124,12 +124,16 @@ class IndexWriter extends HTMLWriter
           break;
 
         }
-        if ($textTag = $element->tags('@text') && $firstSentenceTags = $textTag->firstSentenceTags($this->_doclet)) {
-          echo '<dd>';
-          foreach ($firstSentenceTags as $firstSentenceTag) {
-            echo $firstSentenceTag->text($this->_doclet);
+        $textTag = $element->tags('@text');
+        if ($textTag) {
+          $firstSentenceTags = $textTag->firstSentenceTags($this->_doclet);
+          if ($firstSentenceTags) {
+            echo '<dd>';
+            foreach ($firstSentenceTags as $firstSentenceTag) {
+              echo $firstSentenceTag->text($this->_doclet);
+            }
+            echo "</dd>\n";
           }
-          echo "</dd>\n";
         }
       }
     }
@@ -142,17 +146,16 @@ class IndexWriter extends HTMLWriter
 	
 	}
     
-    function compareElements($element1, $element2)
-    {
-        $e1 = strtolower($element1->name());
-        $e2 = strtolower($element2->name());
-        if ($e1 == $e2) {
-            return 0;
-        } elseif ($e1 < $e2) {
-            return -1;
-        } else {
-            return 1;
-        }
+  function compareElements($element1, $element2) {
+    $e1 = strtolower($element1->name());
+    $e2 = strtolower($element2->name());
+    if ($e1 == $e2) {
+        return 0;
+    } elseif ($e1 < $e2) {
+        return -1;
+    } else {
+        return 1;
     }
+  }
 
 }

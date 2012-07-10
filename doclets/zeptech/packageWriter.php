@@ -40,15 +40,16 @@ class PackageWriter extends HTMLWriter
 		$displayTree = $phpdoctor->getOption('tree');
 		
 		if ($displayTree) {
-			$this->_sections[0] = array('title' => 'Overview', 'url' => 'index.html');
-			$this->_sections[1] = array('title' => 'Namespace');
-			$this->_sections[2] = array('title' => 'Class');
-			//$this->_sections[3] = array('title' => 'Use');
-			$this->_sections[4] = array('title' => 'Tree', 'selected' => TRUE);
-			if ($doclet->includeSource()) $this->_sections[5] = array('title' => 'Files', 'url' => 'overview-files.html');
-			$this->_sections[6] = array('title' => 'Deprecated', 'url' => 'deprecated-list.html');
-			$this->_sections[7] = array('title' => 'Todo', 'url' => 'todo-list.html');
-			$this->_sections[8] = array('title' => 'Index', 'url' => 'index-all.html');
+			$this->_sections[] = array('title' => 'Overview', 'url' => 'index.html');
+			$this->_sections[] = array('title' => 'Namespace');
+			$this->_sections[] = array('title' => 'Class');
+			$this->_sections[] = array('title' => 'Tree', 'selected' => TRUE);
+			if ($doclet->includeSource()) {
+        $this->_sections[] = array('title' => 'Files', 'url' => 'overview-files.html');
+      }
+			$this->_sections[] = array('title' => 'Deprecated', 'url' => 'deprecated-list.html');
+			$this->_sections[] = array('title' => 'Todo', 'url' => 'todo-list.html');
+			$this->_sections[] = array('title' => 'Index', 'url' => 'index-all.html');
 
       $this->_id = 'tree';
             
@@ -79,23 +80,24 @@ class PackageWriter extends HTMLWriter
     ksort($packages);
         
 		foreach($packages as $packageName => $package) {
-		
 			$this->_depth = $package->depth() + 1;
 
-			$this->_sections[0] = array('title' => 'Overview', 'url' => 'index.html');
-			$this->_sections[1] = array('title' => 'Namespace', 'selected' => TRUE);
-			$this->_sections[2] = array('title' => 'Class');
-			//$this->_sections[3] = array('title' => 'Use');
-			if ($displayTree) $this->_sections[4] = array('title' => 'Tree', 'url' => $package->asPath().'/package-tree.html');
-			if ($doclet->includeSource()) $this->_sections[5] = array('title' => 'Files', 'url' => 'overview-files.html');
-			$this->_sections[6] = array('title' => 'Deprecated', 'url' => 'deprecated-list.html');
-			$this->_sections[7] = array('title' => 'Todo', 'url' => 'todo-list.html');
-			$this->_sections[8] = array('title' => 'Index', 'url' => 'index-all.html');
+      $this->_sections = array();
+			$this->_sections[] = array('title' => 'Overview', 'url' => 'index.html');
+			$this->_sections[] = array('title' => 'Namespace', 'selected' => TRUE);
+			$this->_sections[] = array('title' => 'Class');
+			if ($displayTree) {
+        $this->_sections[] = array('title' => 'Tree', 'url' => $package->asPath().'/package-tree.html');
+      }
+			if ($doclet->includeSource()) {
+        $this->_sections[] = array('title' => 'Files', 'url' => 'overview-files.html');
+      }
+			$this->_sections[] = array('title' => 'Deprecated', 'url' => 'deprecated-list.html');
+			$this->_sections[] = array('title' => 'Todo', 'url' => 'todo-list.html');
+			$this->_sections[] = array('title' => 'Index', 'url' => 'index-all.html');
             
 			ob_start();
 			
-			echo "<hr>\n\n";
-		
 			echo '<h1>Namespace ', $package->name(), "</h1>\n\n";
 
 			$textTag =& $package->tags('@text');
@@ -185,31 +187,30 @@ class PackageWriter extends HTMLWriter
 				echo '<div class="comment" id="overview_description">'. $this->_processInlineTags($textTag), "</div>\n\n";
 			}
 			
-			echo "<hr>\n\n";
-
 			$this->_output = ob_get_contents();
 			ob_end_clean();
 			
 			$this->write('package-summary.html', $package->name(), $package);
 			
 			if ($displayTree) {
-			
-				$this->_sections[0] = array('title' => 'Overview', 'url' => 'index.html');
-				$this->_sections[1] = array('title' => 'Namespace', 'url' => $package->asPath().'/package-summary.html', 'relative' => TRUE);
-				$this->_sections[2] = array('title' => 'Class');
-				//$this->_sections[3] = array('title' => 'Use');
-				$this->_sections[4] = array('title' => 'Tree', 'url' => $package->asPath().'/package-tree.html', 'selected' => TRUE, 'relative' => TRUE);
-				if ($doclet->includeSource()) $this->_sections[5] = array('title' => 'Files', 'url' => 'overview-files.html');
-                $this->_sections[6] = array('title' => 'Deprecated', 'url' => 'deprecated-list.html');
-                $this->_sections[7] = array('title' => 'Todo', 'url' => 'todo-list.html');
-                $this->_sections[8] = array('title' => 'Index', 'url' => 'index-all.html');
+		    $this->_sections = array();	
+				$this->_sections[] = array('title' => 'Overview', 'url' => 'index.html');
+				$this->_sections[] = array('title' => 'Namespace', 'url' => $package->asPath().'/package-summary.html', 'relative' => TRUE);
+				$this->_sections[] = array('title' => 'Class');
+				$this->_sections[] = array('title' => 'Tree', 'url' => $package->asPath().'/package-tree.html', 'selected' => TRUE, 'relative' => TRUE);
+				if ($doclet->includeSource()) {
+          $this->_sections[] = array('title' => 'Files', 'url' => 'overview-files.html');
+        }
+        $this->_sections[] = array('title' => 'Deprecated', 'url' => 'deprecated-list.html');
+        $this->_sections[] = array('title' => 'Todo', 'url' => 'todo-list.html');
+        $this->_sections[] = array('title' => 'Index', 'url' => 'index-all.html');
 
-                $this->_id = 'tree';
+        $this->_id = 'tree';
                 
 				$tree = array();
 				$classes =& $package->ordinaryClasses();
 				if ($classes) {
-                    ksort($classes);
+          ksort($classes);
 					foreach ($classes as $class) {
 						$this->_buildTree($tree, $class);
 					}
@@ -217,8 +218,6 @@ class PackageWriter extends HTMLWriter
 
 				ob_start();
 				
-                echo "<hr>\n\n";
-                
 				echo '<h1>Class Hierarchy for Package ', $package->name(),'</h1>';
 
 				$this->_displayTree($tree);

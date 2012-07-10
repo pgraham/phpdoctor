@@ -30,13 +30,13 @@ class PackageIndexWriter extends HTMLWriter
 	 *
 	 * @param Doclet doclet
 	 */
-	function __construct(&$doclet) {
+	function __construct($doclet) {
 	
 		parent::__construct($doclet);
 		
-		$phpdoctor =& $this->_doclet->phpdoctor();
+		$phpdoctor = $this->_doclet->phpdoctor();
 		
-		$this->_sections[0] = array('title' => 'Overview', 'selected' => TRUE);
+		$this->_sections[0] = array('title' => 'Overview', 'selected' => true);
 		$this->_sections[1] = array('title' => 'Namespace');
 		$this->_sections[2] = array('title' => 'Class');
 		//$this->_sections[3] = array('title' => 'Use');
@@ -48,15 +48,13 @@ class PackageIndexWriter extends HTMLWriter
 
 		ob_start();
 		
-		echo "<hr>\n\n";
-		
 		echo '<h1>'.$this->_doclet->docTitle()."</h1>\n\n";
 
-		$rootDoc =& $this->_doclet->rootDoc();
+		$rootDoc = $this->_doclet->rootDoc();
 
-		$textTag =& $rootDoc->tags('@text');
+		$textTag = $rootDoc->tags('@text');
 		if ($textTag) {
-			$description = $this->_processInlineTags($textTag, TRUE);
+			$description = $this->_processInlineTags($textTag, true);
 			if ($description) {
 				echo '<div class="comment">', $description, "</div>\n\n";
 				echo '<dl><dt>See:</dt><dd><b><a href="#overview_description">Description</a></b></dd></dl>'."\n\n";
@@ -65,16 +63,16 @@ class PackageIndexWriter extends HTMLWriter
 
 		echo '<table class="title">'."\n";
 		echo '<tr><th colspan="2" class="title">Namespaces</th></tr>'."\n";
-        $packages =& $rootDoc->packages();
+        $packages = $rootDoc->packages();
         ksort($packages);
 		foreach($packages as $name => $package) {
-			$textTag =& $package->tags('@text');
+			$textTag = $package->tags('@text');
 			echo '<tr><td class="name"><a href="'.$package->asPath().'/package-summary.html">'.$package->name().'</a></td>';
-			echo '<td class="description">'.strip_tags($this->_processInlineTags($textTag, TRUE), '<a><b><strong><u><em>').'</td></tr>'."\n";
+			echo '<td class="description">'.strip_tags($this->_processInlineTags($textTag, true), '<a><b><strong><u><em>').'</td></tr>'."\n";
 		}
 		echo '</table>'."\n\n";
 
-		$textTag =& $rootDoc->tags('@text');
+		$textTag = $rootDoc->tags('@text');
 		if ($textTag) {
 			$description = $this->_processInlineTags($textTag);
 			if ($description) {
@@ -82,8 +80,6 @@ class PackageIndexWriter extends HTMLWriter
 			}
 		}
 		
-		echo "<hr>\n\n";
-
 		$this->_output = ob_get_contents();
 		ob_end_clean();
 		
