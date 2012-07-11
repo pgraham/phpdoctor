@@ -55,8 +55,7 @@ require('classes/tag.php');
  *
  * @package PHPDoctor
  */
-class PHPDoctor
-{
+class PHPDoctor {
 
 	/** The version of PHPDoctor.
 	 *
@@ -766,23 +765,36 @@ class PHPDoctor
               case T_FUNCTION:
               // read function
               $name = $this->_getProgramElementName($tokens, $key);
-              $method =& new methodDoc($name, $ce, $rootDoc, $filename, $lineNumber, $this->sourcePath()); // create method object
-              $this->verbose('+ Entering '.get_class($method).': '.$method->name());
+              $method =& new methodDoc($name, $ce, $rootDoc, $filename,
+                $lineNumber, $this->sourcePath());
+
+              $this->verbose('+ Entering ' .get_class($method) .
+                ": {$method->name()}");
+
               if (isset($currentData['docComment'])) { // set doc comment
-                $method->set('docComment', $currentData['docComment']); // set doc comment
+                $method->set('docComment', $currentData['docComment']);
               }
-              $method->set('data', $currentData); // set data
+              $method->set('data', $currentData);
               $ceClass = strtolower(get_class($ce));
-              if ($ceClass == 'rootdoc') { // global function, add to package
+
+              if ($ceClass == 'rootdoc') {
+                // global function, add to package
                 $this->verbose(' is a global function');
-                if (isset($currentData['access']) && $currentData['access'] == 'private') $method->makePrivate();
-                if (isset($currentData['package']) && $currentData['package'] != NULL) { // set package
+                if (isset($currentData['access']) &&
+                    $currentData['access'] == 'private')
+                {
+                  $method->makePrivate();
+                }
+                if (isset($currentData['package']) &&
+                    $currentData['package'] != null)
+                {
+                  // set package
                   $method->set('package', $currentData['package']);
                 } else {
                   $method->set('package', $currentPackage);
                 }
                 $method->mergeData();
-                $parentPackage =& $rootDoc->packageNamed($method->packageName(), TRUE); // get parent package
+                $parentPackage =& $rootDoc->packageNamed($method->packageName(), TRUE);
                 if ($this->_includeElements($method)) {
                   $parentPackage->addFunction($method); // add method to package
                 }
