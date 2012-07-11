@@ -188,21 +188,18 @@ class ClassDoc extends ProgramElementDoc
         return $return;
 	}
 	
-	/** Return constructor for this class.
-	 *
-	 * @return MethodDoc
-	 */
-	function &constructor()
-    {
-        $return = NULL;
-        foreach ($this->_methods as $method) {
-            if ($method->isConstructor()) {
-                $return =& $method;
-                break;
-            }
-        }
-		return $return;
-	}
+  /** Return constructor for this class.
+   *
+   * @return MethodDoc
+   */
+  public function constructor() {
+    foreach ($this->_methods as $method) {
+      if ($method->isConstructor()) {
+        return $method;
+      }
+    }
+    return null;
+  }
 	
 	/** Return destructor for this class.
 	 *
@@ -361,6 +358,7 @@ class ClassDoc extends ProgramElementDoc
             // merge method data
             $methods =& $this->methods();
             foreach ($methods as $name => $method) {
+              $methodParams = $method->parameters();
                 $parentMethod =& $parent->methodNamed($name);
                 if ($parentMethod) {
                     // tags
@@ -383,14 +381,14 @@ class ClassDoc extends ProgramElementDoc
                     }
                     // method parameters
                     foreach($parentMethod->parameters() as $paramName => $param) {
-                        if (isset($methods[$name]->_parameters[$paramName])) {
-                            $type =& $methods[$name]->_parameters[$paramName]->type();
+                        if (isset($methodParams[$paramName])) {
+                            $type =& $methodParams[$paramName]->type();
                         }
-                        if (!isset($methods[$name]->_parameters[$paramName]) || $type->typeName() == 'mixed') {
+                        if (!isset($methodParams[$paramName]) || $type->typeName() == 'mixed') {
                             $phpdoctor->verbose('> Merging method '.$this->name().':'.$name.' with parameter '.$paramName.' from parent '.$parent->name().':'.$parentMethod->name());
                             $paramType =& $param->type();
-                            $methods[$name]->_parameters[$paramName] =& new fieldDoc($paramName, $methods[$name], $this->_root);
-                            $methods[$name]->_parameters[$paramName]->set('type', new type($paramType->typeName(), $this->_root));
+                            $methodParams[$paramName] =& new fieldDoc($paramName, $methods[$name], $this->_root);
+                            $methodParams[$paramName]->set('type', new type($paramType->typeName(), $this->_root));
                         }
                     }
                     // method return type
