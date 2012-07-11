@@ -57,11 +57,7 @@ require('classes/tag.php');
  */
 class PHPDoctor {
 
-  /** The version of PHPDoctor.
-   *
-   * @var str
-   */
-  var $_version = '2RC4';
+  CONST VERSION = '2RC4-php5.3';
 
   /** The path PHPDoctor is running from.
    *
@@ -506,15 +502,6 @@ class PHPDoctor {
   function sourcePath()
     {
     return realpath($this->_sourcePath[$this->_sourceIndex]);
-  }
-
-  /** Return the version of PHPDoctor.
-   *
-   * @return str
-   */
-  function version()
-    {
-    return $this->_version;
   }
 
   /** Return the default package.

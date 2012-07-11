@@ -277,16 +277,6 @@ class Standard extends Doclet
     {
 		return $this->_tree;
 	}
-
-	/** Return the version of PHPDoctor.
-	 *
-	 * @return str
-	 */
-	function version()
-    {
-		$phpdoctor =& $this->_rootDoc->phpdoctor();
-		return $phpdoctor->version();
-	}
 	
 	/** Should we be outputting the source code?
 	 *

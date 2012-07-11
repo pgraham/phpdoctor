@@ -73,7 +73,7 @@ class HTMLWriter
 	 */
 	function _htmlHeader($title) {
 
-    $phpDocVersion = htmlspecialchars('PHPDoctor ' . $this->_doclet->version(),
+    $phpDocVersion = htmlspecialchars('PHPDoctor ' . PHPDoctor::VERSION,
       ENT_QUOTES, 'UTF-8', false /* Don't double quote */);
 
     $resetCss = $this->asTopLevelPath('reset.css');
