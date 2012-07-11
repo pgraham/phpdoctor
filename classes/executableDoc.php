@@ -26,11 +26,12 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 class ExecutableDoc extends ProgramElementDoc
 {
 
-	/** The parameters this function takes.
-	 *
-	 * @var fieldDoc[]
-	 */
-	var $_parameters = array();
+  /**
+   * The parameters this function takes.
+   *
+   * @var fieldDoc[]
+   */
+  protected $_parameters = array();
 	
 	/** The subfunctions this function has.
 	 *
@@ -53,12 +54,21 @@ class ExecutableDoc extends ProgramElementDoc
 		$this->_functions[$function->name()] =& $function;
 	}
 
+  /**
+   * Add a parameter to this method.
+   *
+   * @param FieldDoc parameter
+   */
+  public function addParameter($parameter) {
+    $this->_parameters[$parameter->name()] = $parameter;
+  }
+
 	/** Get argument information.
 	 *
 	 * @return FieldDoc[] An array of parameter, one element per argument in the
 	 * order the arguments are present
 	 */
-	function &parameters()
+	function parameters()
     {
 		return $this->_parameters;
 	}
