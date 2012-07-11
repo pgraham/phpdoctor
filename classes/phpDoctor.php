@@ -221,19 +221,18 @@ class PHPDoctor {
    * @var str
    */
   var $_currentFilename = NULL;
-  
-    /** Whether or not to use PEAR compatibility mode for first sentence tags.
-     *
-     * @var boolean
-     */
-    var $_pearCompat = FALSE;
+
+  /** Whether or not to use PEAR compatibility mode for first sentence tags.
+   *
+   * @var boolean
+   */
+  var $_pearCompat = FALSE;
     
   /** Constructor
    *
    * @param str config The configuration file to use for this run of PHPDoctor
    */
-  function phpDoctor($config = 'default.ini')
-    {
+  function __construct($config = 'default.ini') {
 
     // record start time
     $this->_startTime = $this->_getTime();
@@ -243,13 +242,13 @@ class PHPDoctor {
     
     // read config file
     if (is_file($config)) {
-      $this->_options = @parse_ini_file($config);
+      $this->_options = parse_ini_file($config);
       if (count($this->_options) == 0) {
-        $this->error('Could not parse configuration file "'.$config.'"');
+        $this->error("Could not parse configuration file $config");
         exit;
       }
     } else {
-      $this->error('Could not find configuration file "'.$config.'"');
+      $this->error("Could not find configuration file $config");
       exit;
     }
     
@@ -261,11 +260,11 @@ class PHPDoctor {
     if (isset($this->_options['quiet'])) $this->_quiet = $this->_options['quiet'];
         
     if (isset($this->_options['source_path'])) {
-            $this->_sourcePath = array();
-            foreach (explode(',', $this->_options['source_path']) as $path) {
-                $this->_sourcePath[] = $this->fixPath($path, getcwd());
-            }
+        $this->_sourcePath = array();
+        foreach (explode(',', $this->_options['source_path']) as $path) {
+            $this->_sourcePath[] = $this->fixPath($path, getcwd());
         }
+    }
         
     if (isset($this->_options['subdirs'])) {
         $this->_subdirs = $this->_options['subdirs'];
@@ -281,10 +280,10 @@ class PHPDoctor {
     }
     
     $this->verbose('Searching for files to parse...');
-        $this->_files = array();
-        foreach ($this->_sourcePath as $path) {
-            $this->_files[$path] = array_unique($this->_buildFileList($files, $path));
-        }
+    $this->_files = array();
+    foreach ($this->_sourcePath as $path) {
+        $this->_files[$path] = array_unique($this->_buildFileList($files, $path));
+    }
     if (count($this->_files) == 0) {
       $this->error('Could not find any files to parse');
       exit;
