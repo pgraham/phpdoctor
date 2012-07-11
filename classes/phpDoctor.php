@@ -251,7 +251,10 @@ class PHPDoctor {
       $this->error("Could not find configuration file $config");
       exit;
     }
+  }
     
+  /* Parse the current options in preparation for parsing */
+  private function _parseOptions() {
     // set phpdoctor options
     if (isset($this->_options['verbose'])) {
       $this->_verbose = $this->_options['verbose'];
@@ -324,6 +327,16 @@ class PHPDoctor {
     else $this->_formatterPath = $this->_path.DIRECTORY_SEPARATOR.$this->_formatterPath;
     
     if (isset($this->_options['pear_compat'])) $this->_pearCompat = $this->_options['pear_compat'];
+  }
+
+  /**
+   * Programatically set an option.  This is mainly useful for testing.
+   *
+   * @param string option The name of the option to set
+   * @param string values The new value for the option
+   */
+  public function setOption($opt, $val) {
+    $this->_options[$opt] = $val;
   }
   
   /**
@@ -536,7 +549,8 @@ class PHPDoctor {
    *
    * @return RootDoc
    */
-  function &parse() {
+  public function parse() {
+    $this->_parseOptions();
         
     $rootDoc =& new rootDoc($this);
     $ii = 0;
