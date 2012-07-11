@@ -47,7 +47,7 @@ class PackageIndexFrameWriter {
 		echo "<li><a href=$idxLink>All Items</a></li>\n";
 		echo "</ul>\n\n";
 		
-		echo "<h1>Namespaces</h1>\n\n";
+		echo "<h2>Namespaces</h2>\n\n";
 
 		$rootDoc = $this->_doclet->rootDoc();
 

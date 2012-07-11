@@ -8,8 +8,12 @@ body {
   color: #333;
 }
 
-p, dl, ul, ol, h1, h2, h3, h4, h5, h6, table {
+p, dl, h1, h2, h3, h4, h5, h6, table {
     margin: 1em 0;
+}
+
+ol, ul {
+  margin: 1em;
 }
 
 h1 {
@@ -99,6 +103,10 @@ td p {
 
 pre.tree {
     margin: 1em 0;
+}
+
+p.list {
+	margin-left: 0px;
 }
 
 #packages, #all-items, #content {
@@ -199,4 +207,72 @@ pre.tree {
     font-size: 65%;
     font-family: 'Comfortaa', sans-serif;
     margin: 8px;
+}
+
+
+
+div.qualifiedName {
+    font-size: 80%;
+    font-weight: bold;
+    margin: 10px 0 0;
+}
+
+div.location,
+a.location {
+    display: block;
+    font-size: 80%;
+	float: right;
+}
+
+#definition h1 {
+    margin: 0 0 10px;
+    font-family: 'Exo', serif;
+}
+
+#definition h2 {
+    border: 2px solid #999;
+    padding: 2px;
+    background-color: #ccf;
+    text-align: left;
+    font-size: 140%;
+    font-family: 'Exo', serif;
+}
+
+table.inherit th {
+    background-color: #eef;
+    font-size: 120%;
+}
+
+p.signature, div.comment {
+    margin: 10px 0;
+}
+
+code.signature {
+    display: block;
+    margin: 10px 0;
+}
+
+div.details {
+    margin: 10px 0 10px 20px;
+}
+
+td.type {
+    text-align: right;
+    vertical-align: top;
+    font-family: monospace;
+}
+
+td p.name {
+    font-family: monospace;
+}
+
+td p.description {
+    margin: 2px 0 0 20px;
+}
+
+/* tree */
+
+#tree ul ul {
+    margin-top: 0;
+    margin-bottom: 0;
 }

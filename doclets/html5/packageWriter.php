@@ -63,7 +63,6 @@ class PackageWriter extends HTMLWriter
 
 			ob_start();
 			
-			echo "<hr>\n\n";
 			echo '<h1>Class Hierarchy</h1>';
 			
 			$this->_displayTree($tree);

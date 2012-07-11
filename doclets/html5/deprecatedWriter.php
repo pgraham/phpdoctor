@@ -95,12 +95,8 @@ class DeprecatedWriter extends HTMLWriter {
     
     ob_start();
     
-    echo "<hr>\n\n";
-    
     echo '<h1>Deprecated API</h1>';
 
-    echo "<hr>\n\n";
-    
     if ($deprecatedClasses || $deprecatedFields || $deprecatedMethods || $deprecatedGlobals || $deprecatedFunctions) {
       echo "<h2>Contents</h2>\n";
       echo "<ul>\n";

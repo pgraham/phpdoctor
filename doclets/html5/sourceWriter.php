@@ -54,8 +54,6 @@ class SourceWriter extends HTMLWriter
     
     ob_start();
     
-    echo "<hr>\n\n";
-    
     echo '<h1>Source Files</h1>';
     
     echo "<ul>\n";
