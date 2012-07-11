@@ -20,9 +20,7 @@ class InheritedConstructorTest extends TestCase {
     $phpdoc->setOption('quiet', true);
 
     $rootDoc = $phpdoc->parse();
-
     $classes = $rootDoc->classes();
-    $this->assertCount(3, $classes);
 
     $concreteClass = $classes['ConcreteClass.' . self::TEST_NS];
     $this->assertInstanceOf('ClassDoc', $concreteClass);
@@ -44,9 +42,7 @@ class InheritedConstructorTest extends TestCase {
     $phpdoc->setOption('quiet', true);
 
     $rootDoc = $phpdoc->parse();
-
     $classes = $rootDoc->classes();
-    $this->assertCount(3, $classes);
 
     $classKey = 'ConcreteClassNoArgsConstructor.' . self::TEST_NS;
     $concreteClass = $classes[$classKey];
@@ -61,6 +57,26 @@ class InheritedConstructorTest extends TestCase {
       $textTag->_text);
 
     $this->assertArrayNotHasKey('@param', $constructor->_tags);
+  }
+
+  public function testInheritedTags() {
+    $phpdoc = new \PhpDoctor(PHPDOCTOR_DEFAULT_CONFIG);
+    $phpdoc->setOption('source_path', './inheritedConstructorTest');
+    $phpdoc->setOption('quiet', true);
+
+    $rootDoc = $phpdoc->parse();
+    $classes = $rootDoc->classes();
+
+    $classKey = 'ConcreteClassNoTagsConstructor.' . self::TEST_NS;
+    $concreteClass = $classes[$classKey];
+    $this->assertInstanceOf('ClassDoc', $concreteClass);
+
+    $constructor = $concreteClass->constructor();
+    $this->assertInstanceOf('MethodDoc', $constructor);
+    $this->assertTrue($constructor->isConstructor());
+
+    $this->assertArrayHasKey('@param', $constructor->_tags);
+    $this->assertCount(1, $constructor->_tags['@param']);
   }
 
 }
