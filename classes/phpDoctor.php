@@ -263,10 +263,10 @@ class PHPDoctor {
     if (isset($this->_options['quiet'])) $this->_quiet = $this->_options['quiet'];
         
     if (isset($this->_options['source_path'])) {
-        $this->_sourcePath = array();
-        foreach (explode(',', $this->_options['source_path']) as $path) {
-            $this->_sourcePath[] = $this->fixPath($path, getcwd());
-        }
+      $this->_sourcePath = array();
+      foreach (explode(',', $this->_options['source_path']) as $path) {
+        $this->_sourcePath[] = $this->fixPath($path, getcwd());
+      }
     }
         
     if (isset($this->_options['subdirs'])) {
@@ -285,7 +285,7 @@ class PHPDoctor {
     $this->verbose('Searching for files to parse...');
     $this->_files = array();
     foreach ($this->_sourcePath as $path) {
-        $this->_files[$path] = array_unique($this->_buildFileList($files, $path));
+      $this->_files[$path] = array_unique($this->_buildFileList($files, $path));
     }
     if (count($this->_files) == 0) {
       $this->error('Could not find any files to parse');
@@ -345,13 +345,12 @@ class PHPDoctor {
    *
    * @param str[] files Array of filenames to expand
    */
-  function _buildFileList($files, $dir)
-    {
+  private function _buildFileList($files, $dir) {
     $list = array();
     
     $dir = realpath($dir);
     if (!$dir) {
-        return $list;
+      return $list;
     }
     $dir = $this->fixPath($dir);
 
@@ -488,9 +487,8 @@ class PHPDoctor {
    * @param str path Path to postfix
    * @return str
    */
-  function fixPath($path)
-    {
-        if (substr($path, -1, 1) != '/' && substr($path, -1, 1) != '\\') {
+  function fixPath($path) {
+    if (substr($path, -1, 1) !== '/' && substr($path, -1, 1) !== '\\') {
       return $path.'/';
     } else {
       return $path;
@@ -501,8 +499,7 @@ class PHPDoctor {
    *
    * @return str
    */
-  function docletPath()
-    {
+  function docletPath() {
     //return $this->makeAbsolutePath($this->fixPath($this->_docletPath).$this->fixPath($this->_doclet), $this->_path);
     return realpath($this->fixPath($this->_docletPath).$this->fixPath($this->_doclet)).'/';
   }
@@ -511,8 +508,7 @@ class PHPDoctor {
    *
    * @return str
    */
-  function sourcePath()
-    {
+  function sourcePath() {
     return realpath($this->_sourcePath[$this->_sourceIndex]);
   }
 
@@ -552,7 +548,7 @@ class PHPDoctor {
   public function parse() {
     $this->_parseOptions();
         
-    $rootDoc =& new rootDoc($this);
+    $rootDoc = new rootDoc($this);
     $ii = 0;
     foreach ($this->_files as $path => $files) {
       $this->_sourceIndex = $ii++;

@@ -25,13 +25,14 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  * @package PHPDoctor
  * @abstract
  */
-class Doc {
+abstract class Doc {
 
-	/** The name of this construct
-	 *
-	 * @var str
-	 */
-	var $_name = NULL;
+  /**
+   * The name of this construct
+   *
+   * @var str
+   */
+  protected $_name = null;
 
 	/** Data about the element creamed from the token stream before the object
 	 * for this element was created. This array contains extra data about the

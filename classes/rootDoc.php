@@ -134,15 +134,14 @@ class RootDoc extends Doc
 	 *
 	 * @return ClassDoc[]
 	 */
-	function &classes()
-    {
+	function classes() {
 		$classes = array();
-		$packages = $this->packages(); // not by reference so as not to move the internal array pointer
+		$packages = $this->packages();
 		foreach ($packages as $name => $package) {
-			$packageClasses = $this->_packages[$name]->allClasses(); // not by reference so as not to move the internal array pointer
+			$packageClasses = $this->_packages[$name]->allClasses();
 			if ($packageClasses) {
 				foreach ($packageClasses as $key => $pack) {
-					$classes[$key.'.'.$name] =& $packageClasses[$key];
+					$classes[$key.'.'.$name] = $packageClasses[$key];
 				}
 			}
 		}
