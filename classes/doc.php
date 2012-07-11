@@ -61,11 +61,17 @@ class Doc {
 	 */
 	var $inBody = 0;
 	
-	/** Reference to the root element.
-	 *
-	 * @var rootDoc
-	 */
-	var $_root = NULL;
+  /**
+   * Reference to the root element.
+   *
+   * @var rootDoc
+   */
+  protected $_root = null;
+
+  public function __construct($name, $root) {
+    $this->_name = $name;
+    $this->_root = $root;
+  }
 	
 	/** Setter method.
 	 *

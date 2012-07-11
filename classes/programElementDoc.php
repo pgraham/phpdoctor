@@ -75,6 +75,16 @@ class ProgramElementDoc extends Doc
 	 * @var str
 	 */
 	var $_sourcePath = NULL;
+
+  public function __construct($name, $parent, $root, $filename, $lineNumber,
+      $sourcePath)
+  {
+    parent::__construct($name, $root);
+    $this->_parent = $parent;
+    $this->_filename = $filename;
+    $this->_lineNumber = $lineNumber;
+    $this->_sourcePath = $sourcePath;
+  }
 	
 	/** Set element to have public access */
 	function makePublic()

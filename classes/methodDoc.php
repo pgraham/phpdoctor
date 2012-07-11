@@ -37,34 +37,24 @@ class MethodDoc extends ExecutableDoc
 	 */
 	var $_abstract = FALSE;
 
-	/** Constructor
-	 *
-	 * @param str name Name of this element
-	 * @param ClassDoc|MethodDoc parent The parent of this element
-	 * @param RootDoc root The root element
-	 * @param str filename The filename of the source file this element is in
-	 * @param int lineNumber The line number of the source file this element is at
-	 * @param str sourcePath The source path containing the source file
-	 */
-	function methodDoc($name, &$parent, &$root, $filename, $lineNumber, $sourcePath)
-    {
-		$this->_name = $name;
-		$this->_parent =& $parent; // set reference to parent
-		$this->_root =& $root; // set reference to root
-		$this->_returnType =& new type('void', $root);
-		$this->_filename = $filename;
-		$this->_lineNumber = $lineNumber;
-		$this->_sourcePath = $sourcePath;
-	}
+  /**
+   * Constructor
+   *
+   * @param str name Name of this element
+   * @param ClassDoc|MethodDoc parent The parent of this element
+   * @param RootDoc root The root element
+   * @param str filename The filename of the source file this element is in
+   * @param int lineNumber The line number of the source file this element is at
+   * @param str sourcePath The source path containing the source file
+   */
+  public function __construct($name, $parent, $root, $filename, $lineNumber,
+      $sourcePath)
+  {
+    parent::__construct($name, $parent, $root, $filename, $lineNumber,
+      $sourcePath);
 
-	/** Add a parameter to this method.
-	 *
-	 * @param FieldDoc parameter
-	 */
-	function addParameter(&$parameter)
-    {
-		$this->_parameters[$parameter->name()] =& $parameter;
-	}
+    $this->_returnType = new Type('void', $root);
+  }
 
 	/** Get return type.
 	 *
