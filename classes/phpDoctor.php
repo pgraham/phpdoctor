@@ -1315,47 +1315,57 @@ class PHPDoctor {
     }
     
     foreach ($explodedComment as $tag) { // process tags
-            // strip whitespace, newlines and asterisks
-            $tag = preg_replace('/(^[\s\n\*]+|[\s\*]*\*\/$)/m', ' ', $tag); // fixed: empty comment lines at end of docblock
-            $tag = preg_replace('/\n+/', '', $tag);
-            $tag = trim($tag);
+      // strip whitespace, newlines and asterisks
+      $tag = preg_replace('/(^[\s\n\*]+|[\s\*]*\*\/$)/m', ' ', $tag); // fixed: empty comment lines at end of docblock
+      $tag = preg_replace('/\n+/', '', $tag);
+      $tag = trim($tag);
       
       $parts = preg_split('/\s+/', $tag);
       $name = isset($parts[0]) ? array_shift($parts) : $tag;
       $text = join(' ', $parts);
       if ($name) {
         switch ($name) {
-        case 'package': // place current element in package
-        case 'namespace':
-            if (!$this->_ignorePackageTags) { // unless we're ignoring package tags
-                $data['package'] = $text;
-            }
+          case 'package': // place current element in package
+          case 'namespace':
+          if (!$this->_ignorePackageTags) { // unless we're ignoring package tags
+              $data['package'] = $text;
+          }
           break;
-        case 'var': // set variable type
+
+          case 'var': // set variable type
           $data['type'] = $text;
           break;
-        case 'access': // set access permission
+
+          case 'access': // set access permission
           $data['access'] = $text;
           break;
-        case 'final': // element is final
+
+          case 'final': // element is final
           $data['final'] = TRUE;
           break;
-        case 'abstract': // element is abstract
+
+          case 'abstract': // element is abstract
           $data['abstract'] = TRUE;
           break;
-        case 'static': // element is static
+
+          case 'static': // element is static
           $data['static'] = TRUE;
           break;
-        default: //create tag
-            $name = '@'.$name;
+
+          default: //create tag
+          $name = '@'.$name;
           if (isset($data['tags'][$name])) {
             if (is_array($data['tags'][$name])) {
-              $data['tags'][$name][] = $this->createTag($name, $text, $data, $root);
+              $data['tags'][$name][] = $this->createTag($name, $text, $data,
+                $root);
             } else {
-              $data['tags'][$name] = array($data['tags'][$name], $this->createTag($name, $text, $data, $root));
+              $data['tags'][$name] = array(
+                $data['tags'][$name],
+                $this->createTag($name, $text, $data, $root)
+              );
             }
           } else {
-            $data['tags'][$name] =& $this->createTag($name, $text, $data, $root);
+            $data['tags'][$name] = $this->createTag($name, $text, $data, $root);
           }
         }
       }
@@ -1375,17 +1385,24 @@ class PHPDoctor {
    * @param RootDoc root The root object
    * @return Tag
    */
-  function &createTag($name, $text, &$data, &$root)
-    {
+  function createTag($name, $text, $data, $root) {
     $class = substr($name, 1);
     if ($class) {
-      $tagletFile = $this->makeAbsolutePath($this->fixPath($this->_tagletPath).substr($name, 1).'.php', $this->_path);
+      $tagletPath = $this->fixPath($this->_tagletPath);
+      $tagletFile = $this->makeAbsolutePath("$tagletPath$class.php",
+        $this->_path);
+
       if (is_file($tagletFile)) { // load taglet for this tag
-        if (!class_exists($class)) require_once($tagletFile);
-        $tag =& new $class($text, $data, $root);
+        if (!class_exists($class)) {
+          require_once($tagletFile);
+        }
+        $tag =&new $class($text, $data, $root);
         return $tag;
+
       } else {
-          $tagFile = $this->makeAbsolutePath('classes/'.$class.'Tag.php', $this->_path);
+          $tagFile = $this->makeAbsolutePath('classes/'.$class.'Tag.php',
+            $this->_path);
+
         if (is_file($tagFile)) { // load class for this tag
           $class .= 'Tag';
           if (!class_exists($class)) require_once($tagFile);

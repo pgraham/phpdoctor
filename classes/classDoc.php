@@ -368,61 +368,67 @@ class ClassDoc extends ProgramElementDoc
       $methodParams = $method->parameters();
       $parentMethod = $parent->methodNamed($name);
 
-      if ($parentMethod) {
-        // tags
-        $tags = $parentMethod->tags();
-        if ($tags) {
-          foreach ($tags as $tagName => $tag) {
-            if (!isset($methods[$name]->_tags[$tagName])) {
-              $phpdoctor->verbose(
-                '> Merging method ' . $this->name() . ':' . $name .
-                ' with tag ' . $tagName . ' from parent ' .  $parent->name() .
-                ':' . $parentMethod->name()
-              );
+      if (!$parentMethod) {
+        continue;
+      }
+      // tags
+      $tags = $parentMethod->tags();
+      if ($tags) {
+        foreach ($tags as $tagName => $tag) {
+          if ($tagName === '@param') {
+            continue;
+          }
 
-              if (is_array($tag)) {
-                foreach ($tags[$tagName] as $key => $tag) {
-                  $methods[$name]->_tags[$tagName][$key] = $tags[$tagName][$key];
-                  $methods[$name]->_tags[$tagName][$key]->setParent($this);
-                }
-              } else {
-                $methods[$name]->_tags[$tagName] = $tags[$tagName];
-                $methods[$name]->_tags[$tagName]->setParent($this);
+          if (!isset($method->_tags[$tagName])) {
+            $phpdoctor->verbose(
+              '> Merging method ' . $this->name() . ':' . $name .
+              ' with tag ' . $tagName . ' from parent ' .  $parent->name() .
+              ':' . $parentMethod->name()
+            );
+
+
+            if (is_array($tag)) {
+              foreach ($tags[$tagName] as $key => $tagEl) {
+                $method->_tags[$tagName][$key] = $tags[$tagName][$key];
+                $method->_tags[$tagName][$key]->setParent($this);
               }
+            } else {
+              $method->_tags[$tagName] = $tags[$tagName];
+              $method->_tags[$tagName]->setParent($this);
             }
           }
         }
+      }
 
-        // method parameters
-        foreach($parentMethod->parameters() as $paramName => $param) {
-          if (isset($methodParams[$paramName])) {
-            $type = $methodParams[$paramName]->type();
-          }
-          if (!isset($methodParams[$paramName]) || $type->typeName() == 'mixed') {
-            $phpdoctor->verbose(
-              '> Merging method ' . $this->name() . ':' . $name .
-              ' with parameter ' . $paramName . ' from parent ' .
-              $parent->name (). ':' . $parentMethod->name()
-            );
-
-            $paramType = $param->type();
-            $methodParams[$paramName] = new fieldDoc($paramName, $methods[$name], $this->_root);
-            $methodParams[$paramName]->set('type', new type($paramType->typeName(), $this->_root));
-          }
+      // method parameters
+      foreach($parentMethod->parameters() as $paramName => $param) {
+        if (isset($methodParams[$paramName])) {
+          $type = $methodParams[$paramName]->type();
         }
+        if (!isset($methodParams[$paramName]) || $type->typeName() == 'mixed') {
+          $phpdoctor->verbose(
+            '> Merging method ' . $this->name() . ':' . $name .
+            ' with parameter ' . $paramName . ' from parent ' .
+            $parent->name (). ':' . $parentMethod->name()
+          );
 
-        // method return type
-        if ($parentMethod->returnType() && $methods[$name]->_returnType->typeName() == 'void') {
-          $phpdoctor->verbose('> Merging method '.$this->name().':'.$name.' with return type from parent '.$parent->name().':'.$parentMethod->name());
-          $methods[$name]->_returnType = $parentMethod->returnType();
+          $paramType = $param->type();
+          $methodParams[$paramName] = new fieldDoc($paramName, $methods[$name], $this->_root);
+          $methodParams[$paramName]->set('type', new type($paramType->typeName(), $this->_root));
         }
+      }
 
-        // method thrown exceptions
-        foreach($parentMethod->thrownExceptions() as $exceptionName => $exception) {
-          if (!isset($methods[$name]->_throws[$exceptionName])) {
-            $phpdoctor->verbose('> Merging method '.$this->name().':'.$name.' with exception '.$exceptionName.' from parent '.$parent->name().':'.$parentMethod->name());
-            $methods[$name]->_throws[$exceptionName] =& $exception;
-          }
+      // method return type
+      if ($parentMethod->returnType() && $methods[$name]->_returnType->typeName() == 'void') {
+        $phpdoctor->verbose('> Merging method '.$this->name().':'.$name.' with return type from parent '.$parent->name().':'.$parentMethod->name());
+        $methods[$name]->_returnType = $parentMethod->returnType();
+      }
+
+      // method thrown exceptions
+      foreach($parentMethod->thrownExceptions() as $exceptionName => $exception) {
+        if (!isset($methods[$name]->_throws[$exceptionName])) {
+          $phpdoctor->verbose('> Merging method '.$this->name().':'.$name.' with exception '.$exceptionName.' from parent '.$parent->name().':'.$parentMethod->name());
+          $methods[$name]->_throws[$exceptionName] =& $exception;
         }
       }
     }
