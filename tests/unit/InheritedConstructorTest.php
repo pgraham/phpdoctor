@@ -59,6 +59,10 @@ class InheritedConstructorTest extends TestCase {
     $this->assertArrayNotHasKey('@param', $constructor->_tags);
   }
 
+  /*
+   * Test that overriding methods inherit superclass param doc for parameters
+   * with the same name.
+   */
   public function testInheritedTags() {
     $phpdoc = new \PhpDoctor(PHPDOCTOR_DEFAULT_CONFIG);
     $phpdoc->setOption('source_path', './inheritedConstructorTest');
@@ -76,7 +80,7 @@ class InheritedConstructorTest extends TestCase {
     $this->assertTrue($constructor->isConstructor());
 
     $this->assertArrayHasKey('@param', $constructor->_tags);
-    $this->assertCount(1, $constructor->_tags['@param']);
+    $this->assertCount(2, $constructor->_tags['@param']);
   }
 
 }

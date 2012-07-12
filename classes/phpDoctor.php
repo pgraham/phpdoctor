@@ -1385,7 +1385,7 @@ class PHPDoctor {
    * @param RootDoc root The root object
    * @return Tag
    */
-  function createTag($name, $text, $data, $root) {
+  function createTag($name, $text, &$data, $root) {
     $class = substr($name, 1);
     if ($class) {
       $tagletPath = $this->fixPath($this->_tagletPath);

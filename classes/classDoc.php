@@ -398,6 +398,49 @@ class ClassDoc extends ProgramElementDoc
             }
           }
         }
+
+        // Merge superclass param tags for parameters with the same name that
+        // don't have a param doc
+        if (isset($tags['@param'])) {
+          $paramTags = isset($method->_tags['@param'])
+            ? $method->_tags['@param']
+            : array();
+          if (!is_array($paramTags)) {
+            $paramTags = array( $paramTags );
+          }
+
+          $parentParamTags = is_array($tags['@param'])
+            ? $tags['@param']
+            : array( $tags['@param'] );
+
+          foreach ($methodParams as $paramName => $param) {
+            $hasTag = false;
+            foreach ($paramTags as $paramTag) {
+              if ($paramTag->_var === $paramName) {
+                // The parameter already has a param tag
+                $hasTag = true;
+                break;
+              }
+            }
+            
+            if (!$hasTag) {
+              foreach ($parentParamTags as $parentParamTag) {
+                if ($parentParamTag->_var == $paramName) {
+                  if (!isset($method->_tags['@param'])) {
+                    $method->_tags['@param'] = $parentParamTag;
+                  } else if (!is_array($method->_tags['@param'])) {
+                    $method->_tags['@param'] = array(
+                      $method->_tags['@param'],
+                      $parentParamTag
+                    );
+                  } else {
+                    $method->_tags['@param'][] = $parentParamTag;
+                  }
+                }
+              }
+            }
+          }
+        }
       }
 
       // method parameters
@@ -417,6 +460,7 @@ class ClassDoc extends ProgramElementDoc
           $methodParams[$paramName]->set('type', new type($paramType->typeName(), $this->_root));
         }
       }
+
 
       // method return type
       if ($parentMethod->returnType() && $methods[$name]->_returnType->typeName() == 'void') {
