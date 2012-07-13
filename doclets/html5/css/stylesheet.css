@@ -46,7 +46,7 @@ hr {
 
 dt {
   font-weight: bold;
-  margin: 0.5em 0;
+  margin: 1.5em 0 0.5em;
 }
 
 dd {
@@ -187,10 +187,6 @@ a.location {
 table.inherit th {
     background-color: #eef;
     font-size: 120%;
-}
-
-div.details {
-    margin: 10px 0 10px 20px;
 }
 
 td.type {
