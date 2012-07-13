@@ -86,17 +86,17 @@ abstract class ProgramElementDoc extends Doc {
   }
   
   /** Set element to have public access */
-  function makePublic() {
+  public function makePublic() {
     $this->_access = 'public';
   }
 
   /** Set element to have protected access */
-  function makeProtected() {
+  public function makeProtected() {
     $this->_access = 'protected';
   }
 
   /** Set element to have private access */
-  function makePrivate() {
+  public function makePrivate() {
     $this->_access = 'private';
   }
 
@@ -139,7 +139,12 @@ for the method bar() in class Foo in the package Baz, return:
    */
   function qualifiedName() {
     $parent = $this->containingClass();
-    if ($parent && $parent->name() != '' && $this->_package != $parent->name()) {
+    $parentName = '';
+    if ($parent) {
+      $parentName = $parent->name();
+    }
+
+    if ($parentName && $this->_package !== $parentName) {
       return $this->_package.'\\'.$parent->name().'\\'.$this->_name;
     } else {
       return $this->_package.'\\'.$this->_name;
@@ -155,7 +160,7 @@ modifiers() would return:
    *
    * @return str
    */
-  function modifiers($showPublic = true) {
+  public function modifiers($showPublic = true) {
     $modifiers = '';
     if ($showPublic || $this->_access != 'public') {
       $modifiers .= $this->_access.' ';
@@ -176,36 +181,24 @@ modifiers() would return:
    *
    * @return bool
    */ 
-  function isPublic() {
-    if ($this->_access == 'public') {
-      return true;
-    } else {
-      return false;
-    }
+  public function isPublic() {
+    return $this->_access === 'public';
   }
 
   /** Return true if this program element is protected.
    *
    * @return bool
    */ 
-  function isProtected() {
-    if ($this->_access == 'protected') {
-      return true;
-    } else {
-      return false;
-    }
+  public function isProtected() {
+    return $this->_access === 'protected';
   }
 
   /** Return true if this program element is private.
    *
    * @return bool
    */ 
-  function isPrivate() {
-    if ($this->_access == 'private') {
-      return true;
-    } else {
-      return false;
-    }
+  public function isPrivate() {
+    return $this->_access === 'private';
   }
   
   /** Return true if this program element is final.
