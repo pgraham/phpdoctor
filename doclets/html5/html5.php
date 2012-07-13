@@ -190,7 +190,11 @@ class Html5 extends Doclet {
 
     // Copy background image
     $phpdoctor->message('Copying background image');
-    copy($phpdoctor->docletPath() . 'api-bg.png', $this->_d . 'api-bg.png');
+    $imgSrc = $phpdoctor->docletPath() . 'img/api-bg.png';
+    $imgOutDir = $this->_d . 'img';
+    $imgOut = "$imgOutDir/api-bg.png";
+    mkdir($imgOutDir, 0755, true);
+    copy($imgSrc, $imgOut);
 	
 	}
 
