@@ -134,16 +134,7 @@ class ClassWriter extends HTMLWriter {
         
         echo "<hr>\n\n";
         
-        echo $this->_classSignature($class, $rootPath);
-        
-        $textTag = $class->tags('@text');
-        if ($textTag) {
-          echo '<div class=comment id=overview_description>',
-               $this->_processInlineTags($textTag),
-               "</div>\n\n";
-        }
-
-        $this->_processTags($class->tags());
+        echo $this->_classBlock($class, $rootPath);
 
         echo "<hr>\n\n";
 
@@ -412,6 +403,19 @@ class ClassWriter extends HTMLWriter {
 			}
 		}
 	}
+
+  private function _classBlock(ClassDoc $elm, $rootPath) {
+    echo $this->_classSignature($elm, $rootPath);
+    
+    $textTag = $elm->tags('@text');
+    if ($textTag) {
+      echo '<div class=comment id=overview_description>',
+           $this->_processInlineTags($textTag),
+           "</div>\n\n";
+    }
+
+    $this->_processTags($elm->tags());
+  }
 
   private function _classSignature(ClassDoc $elm, $rootPath) {
     $access = $elm->access();
