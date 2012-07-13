@@ -84,6 +84,15 @@ abstract class ProgramElementDoc extends Doc {
     $this->_lineNumber = $lineNumber;
     $this->_sourcePath = $sourcePath;
   }
+
+  /**
+   * Getter for the element's access level.
+   *
+   * @return string
+   */
+  public function access() {
+    return $this->_access;
+  }
   
   /** Set element to have public access */
   public function makePublic() {

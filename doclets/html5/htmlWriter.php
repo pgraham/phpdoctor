@@ -88,7 +88,7 @@ class HTMLWriter
 		$output .= "<meta name=generator content=$phpDocVersion>\n";
 		$output .= "<meta name=when content=" .gmdate('r') .">\n\n";
 
-    $output .= "<link rel=stylesheet type=text/css href=http://fonts.googleapis.com/css?family=Comfortaa:400,700|Exo:400,700>\n";
+    $output .= "<link rel=stylesheet type=text/css href=http://fonts.googleapis.com/css?family=Comfortaa:400,700|Exo:400,700|Ubuntu+Mono>\n";
 		
 		$output .= "<link rel=stylesheet href=$resetCss>\n";
 		$output .= "<link rel=stylesheet href=$styleCss>\n";

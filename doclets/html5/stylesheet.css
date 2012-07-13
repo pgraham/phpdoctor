@@ -26,6 +26,16 @@ h2 {
   font-family: 'Comfortaa', sans-serif;
 }
 
+h3 {
+  font-size: 1.2em;
+  font-family: 'Comfortaa', sans-serif;
+}
+
+code {
+  font-size: 1em;
+  font-family: 'Ubuntu Mono', monospace;
+}
+
 strong {
   font-weight: 700;
 }
@@ -107,6 +117,25 @@ pre.tree {
 
 p.list {
 	margin-left: 0px;
+}
+
+code.signature .public {
+  color: #1EAC00;
+}
+code.signature .protected {
+  color: #9F0067;
+}
+code.signature .private {
+  color: #C70013;
+}
+code.signature .abstract {
+  color: #CE5500;
+}
+code.signature .static {
+  color: #863700;
+}
+code.signature .final {
+  color: #81000C;
 }
 
 #packages, #all-items, #content {

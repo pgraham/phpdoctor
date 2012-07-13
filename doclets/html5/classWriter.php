@@ -307,9 +307,7 @@ class ClassWriter extends HTMLWriter {
           $textTag = $constructor->tags('@text');
           $this->_sourceLocation($constructor);
           echo '<h3 id="', $constructor->name(),'()">', $constructor->name(), "</h3>\n";
-          echo '<code class="signature">', $constructor->modifiers(), ' ', $constructor->returnTypeAsString(), ' <strong>';
-          echo $constructor->name(), '</strong>', $constructor->flatSignature();
-          echo "</code>\n";
+          echo $this->_signature($constructor);
           echo '<div class="details">', "\n";
           if ($textTag) {
             echo $this->_processInlineTags($textTag);
@@ -325,9 +323,7 @@ class ClassWriter extends HTMLWriter {
             $textTag = $method->tags('@text');
             $this->_sourceLocation($method);
             echo '<h3 id="', $method->name(),'()">', $method->name(), "</h3>\n";
-            echo '<code class="signature">', $method->modifiers(), ' ', $method->returnTypeAsString(), ' <strong>';
-            echo $method->name(), '</strong>', $method->flatSignature();
-            echo "</code>\n";
+            echo $this->_signature($method);
             echo '<div class="details">', "\n";
             if ($textTag) {
               echo $this->_processInlineTags($textTag);
@@ -448,5 +444,31 @@ class ClassWriter extends HTMLWriter {
 			}
 		}
 	}
+
+  private function _signature(MethodDoc $elm) {
+    $access = $elm->access();
+
+    $sig = '<code class=signature>';
+    $sig .= "<span class=$access>$access</span> ";
+
+    if ($elm->isAbstract()) {
+      $sig .= '<span class=abstract>abstract</span> ';
+    }
+
+    if ($elm->isStatic()) {
+      $sig .= '<span class=static>static</span> ';
+    }
+
+    if ($elm->isFinal()) {
+      $sig .= '<span class=final>final</span> ';
+    }
+
+    $sig .= $elm->returnTypeAsString();
+    $sig .= " <strong>{$elm->name()}</strong> ";
+    $sig .= $elm->flatSignature();
+    $sig .= '</code>';
+
+    return $sig;
+  }
 
 }
