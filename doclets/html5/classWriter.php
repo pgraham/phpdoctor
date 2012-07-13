@@ -290,32 +290,14 @@ class ClassWriter extends HTMLWriter {
         if ($constructor) {
           echo "<hr>\n\n";
           echo '<h2 id="detail_method">Constructor Detail</h2>', "\n";
-          $textTag = $constructor->tags('@text');
-          $this->_sourceLocation($constructor);
-          echo '<h3 id="', $constructor->name(),'()">', $constructor->name(), "</h3>\n";
-          echo $this->_methodSignature($constructor);
-          echo '<div class="details">', "\n";
-          if ($textTag) {
-            echo $this->_processInlineTags($textTag);
-          }
-          $this->_processTags($constructor->tags());
-          echo "</div>\n\n";
+          echo $this->_methodBlock($constructor);
         }
         
         if ($methods) {
           echo '<h2 id="detail_method">Method Detail</h2>', "\n";
           foreach($methods as $method) {
             echo "<hr>\n\n";
-            $textTag = $method->tags('@text');
-            $this->_sourceLocation($method);
-            echo '<h3 id="', $method->name(),'()">', $method->name(), "</h3>\n";
-            echo $this->_methodSignature($method);
-            echo '<div class="details">', "\n";
-            if ($textTag) {
-              echo $this->_processInlineTags($textTag);
-            }
-            $this->_processTags($method->tags());
-            echo "</div>\n\n";
+            echo $this->_methodBlock($method);
           }
         }
 
@@ -459,6 +441,23 @@ class ClassWriter extends HTMLWriter {
     
     $sig .= '</p>';
     return $sig;
+  }
+
+  private function _methodBlock(MethodDoc $elm) {
+    $textTag = $elm->tags('@text');
+
+    ob_start();
+    $this->_sourceLocation($elm);
+    echo '<h3 id=', $elm->name(), '()>', $elm->name(), '</h3>';
+    echo $this->_methodSignature($elm);
+    echo '<div class=details>';
+    if ($textTag) {
+      echo $this->_processInlineTags($textTag);
+    }
+    $this->_processTags($elm->tags());
+    echo '</div>';
+
+    return ob_get_clean();
   }
 
   private function _methodSignature(MethodDoc $elm) {
