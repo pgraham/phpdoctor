@@ -38,6 +38,11 @@ class HTMLWriter
 	 */
 	protected $_sections = array();
 
+  /** The small links subnav to jump to different sections within the page.
+   * @var str[][]
+   */
+  protected $_subsections = array();
+
 	/** The directory structure depth. Used to calculate relative paths.
 	 *
 	 * @var int
@@ -196,23 +201,22 @@ class HTMLWriter
             $output .= "</ul>\n";
 		}
 
+    if ($this->_subsections) {
+      $output .= '<div class=small-links>';
 
-		if ($thisClass == 'classwriter') {
-			$output .= '<div class="small_links">'."\n";
-			$output .= 'Summary: <a href="#summary_field">Field</a> | <a href="#summary_method">Method</a> | <a href="#summary_constr">Constr</a>'."\n";
-			$output .= 'Detail: <a href="#detail_field">Field</a> | <a href="#detail_method">Method</a> | <a href="#summary_constr">Constr</a>'."\n";
-			$output .= "</div>\n";
-		} elseif ($thisClass == 'functionwriter') {
-			$output .= '<div class="small_links">'."\n";
-			$output .= 'Summary: <a href="#summary_function">Function</a>'."\n";
-			$output .= 'Detail: <a href="#detail_function">Function</a>'."\n";
-			$output .= "</div>\n";
-		} elseif ($thisClass == 'globalwriter') {
-			$output .= '<div class="small_links">'."\n";
-			$output .= 'Summary: <a href="#summary_global">Global</a>'."\n";
-			$output .= 'Detail: <a href="#detail_global">Global</a>'."\n";
-			$output .= "</div>\n";
-		}
+      $summary = array();
+      $detail = array();
+      foreach ($this->_subsections as $lbl => $subsection) {
+        $summary[] = "<li><a href=#$subsection[summary]>$lbl</a>";
+        $detail[] = "<li><a href=#$subsection[detail]>$lbl</a>";
+      }
+
+      $output .= 'Summary: <ul>' . implode('', $summary) . '</ul>';
+      $output .= 'Detail: <ul>' . implode('', $detail) . '</ul>';
+
+      $output .= '</div>';
+
+    }
 		$output .= "</nav>\n\n";
 
 		return $output;

@@ -123,44 +123,6 @@ p.list {
 	margin-left: 0px;
 }
 
-#main-nav h1 {
-    float: right;
-    font-size: 100%;
-    font-style: italic;
-    padding: 0 4px;
-    margin: 0;
-}
-
-#main-nav ul {
-    list-style: none;
-    margin: 0;
-}
-
-#main-nav ul li {
-    display: inline;
-    font-size: 100%;
-    font-weight: bold;
-    padding: 0 4px;
-}
-
-#main-nav ul li.active {
-    background-color: #00008c;
-    color: #fff;
-}
-
-#main-nav ul li a:visited {
-    color: #000;
-}
-
-#main-nav .small_links {
-    text-transform: uppercase;
-    font-size: 65%;
-    font-family: 'Comfortaa', sans-serif;
-    margin: 8px;
-}
-
-
-
 div.qualifiedName {
     font-size: 80%;
     font-weight: bold;

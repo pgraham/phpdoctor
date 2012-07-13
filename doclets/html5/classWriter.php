@@ -78,6 +78,7 @@ class ClassWriter extends HTMLWriter {
 
       ksort($classes);
       foreach ($classes as $name => $class) {
+        $this->_subsections = array();
         
         ob_start();
         
@@ -143,7 +144,12 @@ class ClassWriter extends HTMLWriter {
         ksort($methods);
 
         if ($constants) {
-          echo '<table id="summary_field">', "\n";
+          $this->_subsections['const'] = array(
+            'summary' => 'summary_const',
+            'detail' => 'detail_const'
+          );
+
+          echo '<table id="summary_const">', "\n";
           echo '<tr><th colspan="2">Constant Summary</th></tr>', "\n";
           foreach ($constants as $field) {
             $textTag = $field->tags('@text');
@@ -163,6 +169,11 @@ class ClassWriter extends HTMLWriter {
         }
         
         if ($fields) {
+          $this->_subsections['field'] = array(
+            'summary' => 'summary_field',
+            'detail' => 'detail_field'
+          );
+
           echo '<table id="summary_field">', "\n";
           echo '<tr><th colspan="2">Field Summary</th></tr>', "\n";
           foreach ($fields as $field) {
@@ -190,6 +201,11 @@ class ClassWriter extends HTMLWriter {
         }
         
         if ($constructor) {
+          $this->_subsections['constr'] = array(
+            'summary' => 'summary_constructor',
+            'detail' => 'detail_constructor'
+          );
+
           echo '<table id="summary_constructor">', "\n";
           echo '<tr><th colspan="2">Constructor Summary</th></tr>', "\n";
           $textTag = $constructor->tags('@text');
@@ -206,6 +222,11 @@ class ClassWriter extends HTMLWriter {
         }
         
         if ($methods) {
+          $this->_subsections['method'] = array(
+            'summary' => 'summary_method',
+            'detail' => 'detail_method'
+          );
+
           echo '<table id="summary_method">', "\n";
           echo '<tr><th colspan="2">Method Summary</th></tr>', "\n";
           foreach($methods as $method) {
@@ -231,7 +252,7 @@ class ClassWriter extends HTMLWriter {
         }
 
         if ($constants) {
-          echo '<h2 id="detail_field">Constant Detail</h2>', "\n";
+          echo '<h2 id="detail_const">Constant Detail</h2>', "\n";
           foreach($constants as $field) {
             $textTag = $field->tags('@text');
             $type = $field->type();
@@ -273,13 +294,13 @@ class ClassWriter extends HTMLWriter {
         }
         
         if ($constructor) {
-          echo '<h2>Constructor Detail</h2>', '<div>';
+          echo '<h2 id=detail_constructor>Constructor Detail</h2>', '<div>';
           echo $this->_methodBlock($constructor);
           echo '</div>';
         }
         
         if ($methods) {
-          echo '<h2>Method Detail</h2>', '<div>';
+          echo '<h2 id=detail_method>Method Detail</h2>', '<div>';
           foreach($methods as $method) {
             echo $this->_methodBlock($method);
           }

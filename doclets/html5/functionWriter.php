@@ -65,6 +65,11 @@ class FunctionWriter extends HTMLWriter
 			$functions = $package->functions();
 				
 			if ($functions) {
+        $this->_subsections['function'] = array(
+          'summary' => 'summary_function',
+          'detail' => 'detail_function'
+        );
+
         ksort($functions);
 				echo '<table id="summary_function" class="title">', "\n";
 				echo '<tr><th colspan="2" class="title">Function Summary</th></tr>', "\n";
