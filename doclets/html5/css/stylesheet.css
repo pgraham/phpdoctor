@@ -22,6 +22,10 @@ h1 {
 }
 
 h2 {
+  margin-top: 2em;
+  border-bottom: 1px solid #999;
+  padding-bottom: 0.5em;
+
   font-size: 1.7em;
   font-family: 'Comfortaa', sans-serif;
 }
@@ -165,9 +169,10 @@ div.qualifiedName {
 
 div.location,
 a.location {
-    display: block;
-    font-size: 80%;
+  display: block;
+  font-size: 80%;
 	float: right;
+  padding-top: 1.5em;
 }
 
 #definition h1 {

@@ -132,11 +132,7 @@ class ClassWriter extends HTMLWriter {
           echo "</dl>\n\n";
         }
         
-        echo "<hr>\n\n";
-        
         echo $this->_classBlock($class, $rootPath);
-
-        echo "<hr>\n\n";
 
         $constants = $class->constants();
         ksort($constants);
@@ -237,7 +233,6 @@ class ClassWriter extends HTMLWriter {
         if ($constants) {
           echo '<h2 id="detail_field">Constant Detail</h2>', "\n";
           foreach($constants as $field) {
-            echo "<hr>\n\n";
             $textTag = $field->tags('@text');
             $type = $field->type();
             $this->_sourceLocation($field);
@@ -259,7 +254,6 @@ class ClassWriter extends HTMLWriter {
         if ($fields) {
           echo '<h2 id="detail_field">Field Detail</h2>', "\n";
           foreach($fields as $field) {
-            echo "<hr>\n\n";
             $textTag = $field->tags('@text');
             $type = $field->type();
             $this->_sourceLocation($field);
@@ -279,17 +273,17 @@ class ClassWriter extends HTMLWriter {
         }
         
         if ($constructor) {
-          echo "<hr>\n\n";
-          echo '<h2 id="detail_method">Constructor Detail</h2>', "\n";
+          echo '<h2>Constructor Detail</h2>', '<div>';
           echo $this->_methodBlock($constructor);
+          echo '</div>';
         }
         
         if ($methods) {
-          echo '<h2 id="detail_method">Method Detail</h2>', "\n";
+          echo '<h2>Method Detail</h2>', '<div>';
           foreach($methods as $method) {
-            echo "<hr>\n\n";
             echo $this->_methodBlock($method);
           }
+          echo '</div>';
         }
 
         $this->_output = ob_get_contents();
@@ -405,9 +399,12 @@ class ClassWriter extends HTMLWriter {
 	}
 
   private function _classBlock(ClassDoc $elm, $rootPath) {
-    echo $this->_classSignature($elm, $rootPath);
-    
     $textTag = $elm->tags('@text');
+
+    ob_start();
+
+    echo '<div class=class-detail>';
+    echo $this->_classSignature($elm, $rootPath);
     if ($textTag) {
       echo '<div class=comment id=overview_description>',
            $this->_processInlineTags($textTag),
@@ -415,6 +412,9 @@ class ClassWriter extends HTMLWriter {
     }
 
     $this->_processTags($elm->tags());
+    echo '</div>';
+
+    return ob_get_clean();
   }
 
   private function _classSignature(ClassDoc $elm, $rootPath) {
@@ -451,6 +451,8 @@ class ClassWriter extends HTMLWriter {
     $textTag = $elm->tags('@text');
 
     ob_start();
+
+    echo '<div class=method-detail>';
     $this->_sourceLocation($elm);
     echo '<h3 id=', $elm->name(), '()>', $elm->name(), '</h3>';
     echo $this->_methodSignature($elm);
@@ -459,7 +461,7 @@ class ClassWriter extends HTMLWriter {
       echo $this->_processInlineTags($textTag);
     }
     $this->_processTags($elm->tags());
-    echo '</div>';
+    echo '</div></div>';
 
     return ob_get_clean();
   }

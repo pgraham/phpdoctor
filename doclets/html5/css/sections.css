@@ -1,3 +1,17 @@
+div.class-detail {
+  border-top: 1px solid #999;
+  border-bottom: 1px solid #999;
+  padding-top: 0.5em;
+  padding-bottom: 0.5em;
+}
+div.method-detail {
+  border-top: 1px dashed #CCC;
+  padding-top: 0.5em;
+}
+div.method-detail:first-child {
+  padding-top: none;
+  border-top: none;
+}
 div.details, div.comment {
   margin: 2em;
 }
