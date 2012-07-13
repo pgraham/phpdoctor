@@ -8,7 +8,7 @@ body {
   color: #333;
 }
 
-p, dl, h1, h2, h3, h4, h5, h6, table {
+p, dl, h1, h2, h3, h4, h5, h6, table, code {
     margin: 1em 0;
 }
 
@@ -119,23 +119,26 @@ p.list {
 	margin-left: 0px;
 }
 
-code.signature .public {
+.signature .public {
   color: #1EAC00;
 }
-code.signature .protected {
+.signature .protected {
   color: #9F0067;
 }
-code.signature .private {
+.signature .private {
   color: #C70013;
 }
-code.signature .abstract {
+.signature .abstract {
   color: #CE5500;
 }
-code.signature .static {
+.signature .static {
   color: #863700;
 }
-code.signature .final {
+.signature .final {
   color: #81000C;
+}
+code.signature {
+    display: block;
 }
 
 #packages, #all-items, #content {
@@ -270,15 +273,6 @@ a.location {
 table.inherit th {
     background-color: #eef;
     font-size: 120%;
-}
-
-p.signature, div.comment {
-    margin: 10px 0;
-}
-
-code.signature {
-    display: block;
-    margin: 10px 0;
 }
 
 div.details {

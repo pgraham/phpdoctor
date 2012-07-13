@@ -134,21 +134,7 @@ class ClassWriter extends HTMLWriter {
         
         echo "<hr>\n\n";
         
-        echo '<p class=signature>',
-             $class->modifiers(),
-             $class->isInterface() ? ' interface ' : ' class ',
-             '<strong>', $class->name(), '</strong>';
-
-        if ($class->superclass()) {
-          $superclass = $rootDoc->classNamed($class->superclass());
-          if ($superclass) {
-            echo '<br>extends <a href=', $rootPath, $superclass->asPath(), '>',
-                 $superclass->name(), "</a>\n\n";
-          } else {
-            echo '<br>extends ', $class->superclass(), "\n\n";
-          }
-        }
-        echo "</p>\n\n";
+        echo $this->_classSignature($class, $rootPath);
         
         $textTag = $class->tags('@text');
         if ($textTag) {
@@ -307,7 +293,7 @@ class ClassWriter extends HTMLWriter {
           $textTag = $constructor->tags('@text');
           $this->_sourceLocation($constructor);
           echo '<h3 id="', $constructor->name(),'()">', $constructor->name(), "</h3>\n";
-          echo $this->_signature($constructor);
+          echo $this->_methodSignature($constructor);
           echo '<div class="details">', "\n";
           if ($textTag) {
             echo $this->_processInlineTags($textTag);
@@ -323,7 +309,7 @@ class ClassWriter extends HTMLWriter {
             $textTag = $method->tags('@text');
             $this->_sourceLocation($method);
             echo '<h3 id="', $method->name(),'()">', $method->name(), "</h3>\n";
-            echo $this->_signature($method);
+            echo $this->_methodSignature($method);
             echo '<div class="details">', "\n";
             if ($textTag) {
               echo $this->_processInlineTags($textTag);
@@ -445,7 +431,37 @@ class ClassWriter extends HTMLWriter {
 		}
 	}
 
-  private function _signature(MethodDoc $elm) {
+  private function _classSignature(ClassDoc $elm, $rootPath) {
+    $access = $elm->access();
+
+    $sig = '<p class=signature>';
+    $sig .= "<span class=$access>$access</span> ";
+
+    if ($elm->isAbstract()) {
+      $sig .= '<span class=abstract>abstract</span> ';
+    }
+
+    $sig .= $elm->isInterface() ? 'interface ' : 'class ';
+    $sig .= "<strong>{$elm->name()}</strong>";
+
+    if ($elm->superclass()) {
+      $rootDoc = $this->_doclet->rootDoc();
+      $superclass = $rootDoc->classNamed($elm->superclass());
+
+      if ($superclass) {
+        $superclassPath = $rootPath . $superclass->asPath();
+        $sig .= " extends <a href=$superclassPath>{$superclass->name()}</a>";
+      } else {
+        $sig .= " extends {$elm->superclass()}";
+      }
+    }
+
+    
+    $sig .= '</p>';
+    return $sig;
+  }
+
+  private function _methodSignature(MethodDoc $elm) {
     $access = $elm->access();
 
     $sig = '<code class=signature>';
