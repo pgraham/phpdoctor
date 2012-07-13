@@ -1,0 +1,64 @@
+#packages, #all-items, #content {
+  overflow: auto;
+  overflow-x: hidden;
+
+  padding: 10px;
+}
+
+#packages {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 80%;
+  bottom: 70%;
+
+  border-right: 1px solid #999;
+  border-bottom: 1px solid #999;
+}
+
+#all-items {
+  position: absolute;
+  top: 30%;
+  left: 0;
+  right: 80%;
+  bottom: 40px;
+
+  border-right: 1px solid #999;
+}
+
+#main-nav {
+  position: absolute;
+  top: 0;
+  height: 2.5em;
+  left: 20%;
+  right: 0;
+
+  border-bottom: 2px groove #999;
+
+  font-family: 'Comfortaa', sans-serif;
+  margin: 0.5em;
+}
+
+#content {
+  position: absolute;
+  top: 3.5em;
+  left: 20%;
+  right: 0;
+  bottom: 40px;
+}
+
+#footer {
+  position: absolute;
+
+  bottom: 0;
+  height: 30px;
+  left: 0;
+  right: 0;
+
+  padding: 10px 10px 0;
+  border-top: 2px groove #999;
+
+  text-align: center;
+  background-image: url(img/api-bg.png);
+}
+

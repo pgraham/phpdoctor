@@ -183,17 +183,40 @@ class Html5 extends Doclet {
             $sourceWriter = new sourceWriter($this);
 		}
 		
-		// copy stylesheets
+		// compile stylesheets
+    // -------------------------------------------------------------------------
 		$phpdoctor->message('Copying stylesheets');
-		copy($phpdoctor->docletPath().'reset.css', $this->_d.'reset.css');
-		copy($phpdoctor->docletPath().'stylesheet.css', $this->_d.'stylesheet.css');
+    $cssSrc = $phpdoctor->docletPath() . 'css';
+
+    // Copy the reset.css stylesheet manually
+		copy("$cssSrc/reset.css", $this->_d.'reset.css');
+
+    $cssCtnt = array();
+    $cssDir = new DirectoryIterator($cssSrc);
+    foreach ($cssDir as $css) {
+      if ($css->isDot() ||
+          $css->isDir() ||
+          substr($css->getBasename(), 0, 1) === '.' ||
+          $css->getBasename() === 'reset.css')
+      {
+        // TODO Support sub-directories
+        continue;
+      }
+
+      $cssCtnt[] = file_get_contents($css->getPathname());
+    }
+    $cssOut = $this->_d . 'stylesheet.css';
+    file_put_contents($cssOut, implode("\n", $cssCtnt));
 
     // Copy background image
+    // -------------------------------------------------------------------------
     $phpdoctor->message('Copying background image');
     $imgSrc = $phpdoctor->docletPath() . 'img/api-bg.png';
     $imgOutDir = $this->_d . 'img';
     $imgOut = "$imgOutDir/api-bg.png";
-    mkdir($imgOutDir, 0755, true);
+    if (!file_exists($imgOutDir)) {
+      mkdir($imgOutDir, 0755, true);
+    }
     copy($imgSrc, $imgOut);
 	
 	}

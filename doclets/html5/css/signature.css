@@ -1,0 +1,22 @@
+.signature .public {
+  color: #1EAC00;
+}
+.signature .protected {
+  color: #9F0067;
+}
+.signature .private {
+  color: #C70013;
+}
+.signature .abstract {
+  color: #CE5500;
+}
+.signature .static {
+  color: #863700;
+}
+.signature .final {
+  color: #81000C;
+}
+
+code.signature {
+    display: block;
+}

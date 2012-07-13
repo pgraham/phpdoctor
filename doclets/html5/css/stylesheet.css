@@ -50,7 +50,7 @@ dt {
 }
 
 dd {
-  margin-left: 40px;
+  margin-left: 1.5em;
 }
 
 dd a {
@@ -117,92 +117,6 @@ pre.tree {
 
 p.list {
 	margin-left: 0px;
-}
-
-.signature .public {
-  color: #1EAC00;
-}
-.signature .protected {
-  color: #9F0067;
-}
-.signature .private {
-  color: #C70013;
-}
-.signature .abstract {
-  color: #CE5500;
-}
-.signature .static {
-  color: #863700;
-}
-.signature .final {
-  color: #81000C;
-}
-code.signature {
-    display: block;
-}
-
-#packages, #all-items, #content {
-  overflow: auto;
-  overflow-x: hidden;
-
-  padding: 10px;
-}
-
-#packages {
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 80%;
-  bottom: 70%;
-
-  border-right: 1px solid #999;
-  border-bottom: 1px solid #999;
-}
-
-#all-items {
-  position: absolute;
-  top: 30%;
-  left: 0;
-  right: 80%;
-  bottom: 40px;
-
-  border-right: 1px solid #999;
-}
-
-#main-nav {
-  position: absolute;
-  top: 0;
-  height: 2.5em;
-  left: 20%;
-  right: 0;
-
-  border-bottom: 2px groove #999;
-
-  font-family: 'Comfortaa', sans-serif;
-  margin: 0.5em;
-}
-
-#content {
-  position: absolute;
-  top: 3.5em;
-  left: 20%;
-  right: 0;
-  bottom: 40px;
-}
-
-#footer {
-  position: absolute;
-
-  bottom: 0;
-  height: 30px;
-  left: 0;
-  right: 0;
-
-  padding: 10px 10px 0;
-  border-top: 2px groove #999;
-
-  text-align: center;
-  background-image: url(img/api-bg.png);
 }
 
 #main-nav h1 {
