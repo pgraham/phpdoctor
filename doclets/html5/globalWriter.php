@@ -59,11 +59,7 @@ class GlobalWriter extends HTMLWriter
 
 			ob_start();
 
-			echo "<hr>\n\n";
-
 			echo "<h1>Globals</h1>\n\n";
-					
-			echo "<hr>\n\n";
 					
 			$globals = $package->globals();
 				
@@ -92,10 +88,11 @@ class GlobalWriter extends HTMLWriter
 				}
 				echo "</table>\n\n";
 
-				echo '<h2 id="detail_global">Global Detail</h2>', "\n";
+				echo '<h2 id="detail_global">Global Detail</h2>', '<div>';
 				foreach($globals as $global) {
 					$textTag =& $global->tags('@text');
 					$type =& $global->type();
+          echo '<div class=global-detail>';
 					$this->_sourceLocation($global);
 					echo '<h3 id="', $global->name(),'">', $global->name(), "</h3>\n";
 					echo '<code class="signature">', $global->modifiers(), ' ', $global->typeAsString(), ' <strong>';
@@ -106,10 +103,11 @@ class GlobalWriter extends HTMLWriter
 					if ($textTag) {
 						echo $this->_processInlineTags($textTag), "\n";
 					}
-                    echo "</div>\n\n";
+          echo "</div>\n\n";
 					$this->_processTags($global->tags());
-					echo "<hr>\n\n";
+          echo '</div>';
 				}
+        echo '</div>';
 			}
 
 			$this->_output = ob_get_contents();

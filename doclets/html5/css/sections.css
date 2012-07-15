@@ -4,11 +4,13 @@ div.class-detail {
   padding-top: 0.5em;
   padding-bottom: 0.5em;
 }
-div.method-detail {
+div.method-detail,
+div.global-detail {
   border-top: 1px dashed #CCC;
   padding-top: 0.5em;
 }
-div.method-detail:first-child {
+div.method-detail:first-child,
+div.global-detail:first-child {
   padding-top: none;
   border-top: none;
 }
