@@ -816,17 +816,9 @@ class PHPDoctor {
               break;
     
               case T_STRING:
-              $constOutsideOfClass = (isset($tokens[$key - 2][1]) && $tokens[$key - 2][1] == 'const');
-
               // read global constant
-              if ($token[1] == 'define' || $constOutsideOfClass) {// && $tokens[$key + 2][0] == T_CONSTANT_ENCAPSED_STRING) {
-                if (!$constOutsideOfClass) {
-                  // Current token is define() function.
-                  $constantName = $this->_getNext($tokens, $key, T_CONSTANT_ENCAPSED_STRING);
-                } else {
-                  // Current token is constant's name.
-                  $constantName = $token[1];
-                }
+              if ($token[1] == 'define') {// && $tokens[$key + 2][0] == T_CONSTANT_ENCAPSED_STRING) {
+                $constantName = $this->_getNext($tokens, $key, T_CONSTANT_ENCAPSED_STRING);
                 $const =& new fieldDoc($constantName, $ce, $rootDoc, $filename, $lineNumber, $this->sourcePath()); // create constant object
                 $this->verbose('Found '.get_class($const).': global constant '.$const->name());
                 $const->set('final', TRUE); // is constant
@@ -917,12 +909,27 @@ class PHPDoctor {
                       $const->set('docComment', $currentData['docComment']);
                     }
                     $const->set('data', $currentData); // set data
-                    $const->set('package', $ce->packageName()); // set package
                     $const->set('static', TRUE);
-                    $this->verbose(' is a member constant of '.get_class($ce).' '.$ce->name());
-                    $const->mergeData();
-                    if ($this->_includeElements($const)) {
-                      $ce->addConstant($const);
+                    if ($ce instanceof ClassDoc) {
+                      $const->set('package', $ce->packageName()); // set package
+                      $this->verbose(' is a member constant of '.get_class($ce).' '.$ce->name());
+
+                      $const->mergeData();
+                      if ($this->_includeElements($const)) {
+                        $ce->addConstant($const);
+                      }
+                    } else {
+                      if (isset($currentData['package'])) { // set package
+                        $const->set('package', $currentData['package']);
+                      } else {
+                        $const->set('package', $currentPackage);
+                      }
+                      $this->verbose(' is a global constant of ' . $const->packageName());
+                      $const->mergeData();
+                      $parentPackage = $rootDoc->packageNamed($const->packageName(), TRUE); // get parent package
+                      if ($this->_includeElements($const)) {
+                        $parentPackage->addGlobal($const); // add constant to package
+                      }
                     }
                     unset($name);
                     unset($value);
