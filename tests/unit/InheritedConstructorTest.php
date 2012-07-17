@@ -14,10 +14,14 @@ class InheritedConstructorTest extends TestCase {
 
   const TEST_NS = 'phpdoc\\test\\inheritedConstructorTest';
 
-  public function testInheritedConstructor() {
-    $rootDoc = parseSource('inheritedConstructorTest');
+  private static $_rootDoc;
 
-    $classes = $rootDoc->classes();
+  public static function setUpBeforeClass() {
+    self::$_rootDoc = parseSource('inheritedConstructorTest');
+  }
+
+  public function testInheritedConstructor() {
+    $classes = self::$_rootDoc->classes();
 
     $concreteClass = $classes['ConcreteClass.' . self::TEST_NS];
     $this->assertInstanceOf('ClassDoc', $concreteClass);
@@ -34,9 +38,7 @@ class InheritedConstructorTest extends TestCase {
   }
 
   public function testInheritedConstructorNoParams() {
-    $rootDoc = parseSource('inheritedConstructorTest');
-
-    $classes = $rootDoc->classes();
+    $classes = self::$_rootDoc->classes();
 
     $classKey = 'ConcreteClassNoArgsConstructor.' . self::TEST_NS;
     $concreteClass = $classes[$classKey];
@@ -58,9 +60,7 @@ class InheritedConstructorTest extends TestCase {
    * with the same name.
    */
   public function testInheritedTags() {
-    $rootDoc = parseSource('inheritedConstructorTest');
-
-    $classes = $rootDoc->classes();
+    $classes = self::$_rootDoc->classes();
 
     $classKey = 'ConcreteClassNoTagsConstructor.' . self::TEST_NS;
     $concreteClass = $classes[$classKey];
