@@ -15,11 +15,8 @@ class InheritedConstructorTest extends TestCase {
   const TEST_NS = 'phpdoc\\test\\inheritedConstructorTest';
 
   public function testInheritedConstructor() {
-    $phpdoc = new \PhpDoctor(PHPDOCTOR_DEFAULT_CONFIG);
-    $phpdoc->setOption('source_path', './inheritedConstructorTest');
-    $phpdoc->setOption('quiet', true);
+    $rootDoc = parseSource('inheritedConstructorTest');
 
-    $rootDoc = $phpdoc->parse();
     $classes = $rootDoc->classes();
 
     $concreteClass = $classes['ConcreteClass.' . self::TEST_NS];
@@ -37,11 +34,8 @@ class InheritedConstructorTest extends TestCase {
   }
 
   public function testInheritedConstructorNoParams() {
-    $phpdoc = new \PhpDoctor(PHPDOCTOR_DEFAULT_CONFIG);
-    $phpdoc->setOption('source_path', './inheritedConstructorTest');
-    $phpdoc->setOption('quiet', true);
+    $rootDoc = parseSource('inheritedConstructorTest');
 
-    $rootDoc = $phpdoc->parse();
     $classes = $rootDoc->classes();
 
     $classKey = 'ConcreteClassNoArgsConstructor.' . self::TEST_NS;
@@ -64,11 +58,8 @@ class InheritedConstructorTest extends TestCase {
    * with the same name.
    */
   public function testInheritedTags() {
-    $phpdoc = new \PhpDoctor(PHPDOCTOR_DEFAULT_CONFIG);
-    $phpdoc->setOption('source_path', './inheritedConstructorTest');
-    $phpdoc->setOption('quiet', true);
+    $rootDoc = parseSource('inheritedConstructorTest');
 
-    $rootDoc = $phpdoc->parse();
     $classes = $rootDoc->classes();
 
     $classKey = 'ConcreteClassNoTagsConstructor.' . self::TEST_NS;
