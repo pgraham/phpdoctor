@@ -10,6 +10,7 @@ div.global-detail,
 div.method-detail {
   border-top: 1px dashed #CCC;
   padding-top: 0.5em;
+  padding-left: 2em;
 }
 div.constant-detail:first-child,
 div.field-detail:first-child,

@@ -216,7 +216,10 @@ class ClassWriter extends HTMLWriter {
           $textTag = $constructor->tags('@text');
           echo '<tbody>';
           echo '<tr>';
-          echo '<td class=type>', $constructor->modifiers(false), ' ', $constructor->returnTypeAsString();
+          echo '<td class=type>';
+          echo '<code class=signature>';
+          echo $this->_methodModifiers($constructor);
+          echo '</code>';
           echo '<td class=description>';
           echo '<p class=name><a href=#', $constructor->name(), '()>', $constructor->name(), '</a>', $constructor->flatSignature(), '</p>';
           if ($textTag) {
@@ -236,7 +239,10 @@ class ClassWriter extends HTMLWriter {
           foreach($methods as $method) {
             $textTag = $method->tags('@text');
             echo '<tr>';
-            echo '<td class=type>', $method->modifiers(false), ' ', $method->returnTypeAsString();
+            echo '<td class=type>';
+            echo '<code class=signature>';
+            echo $this->_methodModifiers($method);
+            echo '</code>';
             echo '<td class=description>';
             echo '<p class=name><a href=#', $method->name(), '()>', $method->name(), '</a>', $method->flatSignature(), '</p>';
             if ($textTag) {
@@ -559,12 +565,11 @@ class ClassWriter extends HTMLWriter {
     return ob_get_clean();
   }
 
-  private function _methodSignature(MethodDoc $elm) {
+  private function _methodModifiers(MethodDoc $elm) {
     $access = $elm->access();
 
     ob_start();
 
-    echo '<code class=signature>';
     echo '<span class=', $access, '>', $access, '</span> ';
 
     if ($elm->isAbstract()) {
@@ -580,6 +585,15 @@ class ClassWriter extends HTMLWriter {
     }
 
     echo '<span class=type>', $elm->returnTypeAsString(), '</span>';
+
+    return ob_get_clean();
+  }
+
+  private function _methodSignature(MethodDoc $elm) {
+    ob_start();
+
+    echo '<code class=signature>';
+    echo $this->_methodModifiers($elm);
     echo ' <strong>', $elm->name(), '</strong> ';
     echo $elm->flatSignature();
     echo '</code>';
