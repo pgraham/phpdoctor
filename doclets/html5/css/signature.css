@@ -16,7 +16,16 @@
 .signature .final {
   color: #81000C;
 }
+.signature .constant {
+  color: #CF3499;
+}
+.signature .type {
+  color: #555;
+}
 
+td code.signature {
+  display: inline;
+}
 code.signature {
     display: block;
 }

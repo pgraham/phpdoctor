@@ -149,23 +149,25 @@ class ClassWriter extends HTMLWriter {
             'detail' => 'detail_const'
           );
 
-          echo '<table id="summary_const">', "\n";
-          echo '<tr><th colspan="2">Constant Summary</th></tr>', "\n";
+          echo '<table id=summary_const>';
+          echo '<thead>';
+          echo '<tr><th colspan=2>Constant Summary';
+          echo '<tbody>';
           foreach ($constants as $field) {
             $textTag = $field->tags('@text');
-            echo "<tr>\n";
-            echo '<td class="type">', $field->modifiers(false), ' ', $field->typeAsString(), "</td>\n";
-            echo '<td class="description">';
-            echo '<p class="name"><a href="#', $field->name(), '">';
+            echo '<tr>';
+            echo '<td class=type><code class=signature>';
+            echo $this->_constantModifiers($field);
+            echo '</code>';
+            echo '<td class=description>';
+            echo '<p class=name><a href=#', $field->name(), '>';
             if (is_null($field->constantValue())) echo '$';
             echo $field->name(), '</a></p>';
             if ($textTag) {
               echo '<p class="description">', strip_tags($this->_processInlineTags($textTag, true), '<a><b><strong><u><em>'), '</p>';
             }
-            echo "</td>\n";
-            echo "</tr>\n";
           }
-          echo "</table>\n\n";
+          echo '</table>';
         }
         
         if ($fields) {
@@ -174,23 +176,23 @@ class ClassWriter extends HTMLWriter {
             'detail' => 'detail_field'
           );
 
-          echo '<table id="summary_field">', "\n";
-          echo '<tr><th colspan="2">Field Summary</th></tr>', "\n";
+          echo '<table id=summary_field>';
+          echo '<thead>';
+          echo '<tr><th colspan=2>Field Summary</th></tr>';
+          echo '<tbody>';
           foreach ($fields as $field) {
             $textTag = $field->tags('@text');
-            echo "<tr>\n";
-            echo '<td class="type">', $field->modifiers(false), ' ', $field->typeAsString(), "</td>\n";
-            echo '<td class="description">';
-            echo '<p class="name"><a href="#', $field->name(), '">';
+            echo '<tr>';
+            echo '<td class=type>', $field->modifiers(false), ' ', $field->typeAsString();
+            echo '<td class=description>';
+            echo '<p class=name><a href=#', $field->name(), '>';
             if (is_null($field->constantValue())) echo '$';
             echo $field->name(), '</a></p>';
             if ($textTag) {
               echo '<p class="description">', strip_tags($this->_processInlineTags($textTag, true), '<a><b><strong><u><em>'), '</p>';
             }
-            echo "</td>\n";
-            echo "</tr>\n";
           }
-          echo "</table>\n\n";
+          echo '</table>';
         }
         
         if ($class->superclass()) {
@@ -206,19 +208,19 @@ class ClassWriter extends HTMLWriter {
             'detail' => 'detail_constructor'
           );
 
-          echo '<table id="summary_constructor">', "\n";
-          echo '<tr><th colspan="2">Constructor Summary</th></tr>', "\n";
+          echo '<table id=summary_constructor>';
+          echo '<thead>';
+          echo '<tr><th colspan=2>Constructor Summary';
           $textTag = $constructor->tags('@text');
-          echo "<tr>\n";
-          echo '<td class="type">', $constructor->modifiers(false), ' ', $constructor->returnTypeAsString(), "</td>\n";
-          echo '<td class="description">';
-          echo '<p class="name"><a href="#', $constructor->name(), '()">', $constructor->name(), '</a>', $constructor->flatSignature(), '</p>';
+          echo '<tbody>';
+          echo '<tr>';
+          echo '<td class=type>', $constructor->modifiers(false), ' ', $constructor->returnTypeAsString();
+          echo '<td class=description>';
+          echo '<p class=name><a href=#', $constructor->name(), '()>', $constructor->name(), '</a>', $constructor->flatSignature(), '</p>';
           if ($textTag) {
-            echo '<p class="description">', strip_tags($this->_processInlineTags($textTag, true), '<a><b><strong><u><em>'), '</p>';
+            echo '<p class=description>', strip_tags($this->_processInlineTags($textTag, true), '<a><b><strong><u><em>'), '</p>';
           }
-          echo "</td>\n";
-          echo "</tr>\n";
-          echo "</table>\n\n";
+          echo '</table>';
         }
         
         if ($methods) {
@@ -227,21 +229,19 @@ class ClassWriter extends HTMLWriter {
             'detail' => 'detail_method'
           );
 
-          echo '<table id="summary_method">', "\n";
-          echo '<tr><th colspan="2">Method Summary</th></tr>', "\n";
+          echo '<table id=summary_method>';
+          echo '<tr><th colspan=2>Method Summary</th></tr>';
           foreach($methods as $method) {
             $textTag = $method->tags('@text');
-            echo "<tr>\n";
-            echo '<td class="type">', $method->modifiers(false), ' ', $method->returnTypeAsString(), "</td>\n";
-            echo '<td class="description">';
-            echo '<p class="name"><a href="#', $method->name(), '()">', $method->name(), '</a>', $method->flatSignature(), '</p>';
+            echo '<tr>';
+            echo '<td class=type>', $method->modifiers(false), ' ', $method->returnTypeAsString();
+            echo '<td class=description>';
+            echo '<p class=name><a href=#', $method->name(), '()>', $method->name(), '</a>', $method->flatSignature(), '</p>';
             if ($textTag) {
-              echo '<p class="description">', strip_tags($this->_processInlineTags($textTag, true), '<a><b><strong><u><em>'), '</p>';
+              echo '<p class=description>', strip_tags($this->_processInlineTags($textTag, true), '<a><b><strong><u><em>'), '</p>';
             }
-            echo "</td>\n";
-            echo "</tr>\n";
           }
-          echo "</table>\n\n";
+          echo '</table>';
         }
         
         if ($class->superclass()) {
@@ -252,24 +252,11 @@ class ClassWriter extends HTMLWriter {
         }
 
         if ($constants) {
-          echo '<h2 id="detail_const">Constant Detail</h2>', "\n";
+          echo '<h2 id=detail_const>Constant Detail</h2><div>';
           foreach($constants as $field) {
-            $textTag = $field->tags('@text');
-            $type = $field->type();
-            $this->_sourceLocation($field);
-            echo '<h3 id="', $field->name(),'">', $field->name(), "</h3>\n";
-            echo '<code class="signature">', $field->modifiers(), ' ', $field->typeAsString(), ' <strong>';
-            if (is_null($field->constantValue())) echo '$';
-            echo $field->name(), '</strong>';
-            if (!is_null($field->value())) echo ' = ', htmlspecialchars($field->value());
-            echo "</code>\n";
-            echo '<div class="details">', "\n";
-            if ($textTag) {
-              echo $this->_processInlineTags($textTag);
-            }
-            $this->_processTags($field->tags());
-            echo "</div>\n\n";
+            echo $this->_constantBlock($field);
           }
+          echo '</div>';
         }
 
         if ($fields) {
@@ -468,6 +455,49 @@ class ClassWriter extends HTMLWriter {
     return $sig;
   }
 
+  private function _constantBlock(FieldDoc $elm) {
+    $textTag = $elm->tags('@text');
+    $type = $elm->type();
+
+    ob_start();
+
+    echo '<div class=constant-detail>';
+    $this->_sourceLocation($elm);
+    echo '<h3 id=', $elm->name(),'>', $elm->name(), '</h3>';
+    echo $this->_constantSignature($elm);
+    echo '<div class=details>';
+    if ($textTag) {
+      echo $this->_processInlineTags($textTag);
+    }
+    $this->_processTags($elm->tags());
+    echo '</div></div>';
+
+    return ob_get_clean();
+  }
+
+  private function _constantModifiers(FieldDoc $elm) {
+    ob_start();
+
+    echo '<span class=constant>constant</span> ',
+         '<span class=type>', $elm->typeAsString(), '</span>';
+
+    return ob_get_clean();
+  }
+
+  private function _constantSignature(FieldDoc $elm) {
+    ob_start();
+
+    echo '<code class=signature>';
+    echo $this->_constantModifiers($elm);
+    echo ' <strong>', $elm->name(), '</strong>';
+    if (!is_null($elm->value())) {
+      echo ' = ', htmlspecialchars($elm->value());
+    }
+    echo '</code>';
+
+    return ob_get_clean();
+  }
+
   private function _methodBlock(MethodDoc $elm) {
     $textTag = $elm->tags('@text');
 
@@ -490,27 +520,29 @@ class ClassWriter extends HTMLWriter {
   private function _methodSignature(MethodDoc $elm) {
     $access = $elm->access();
 
-    $sig = '<code class=signature>';
-    $sig .= "<span class=$access>$access</span> ";
+    ob_start();
+
+    echo '<code class=signature>';
+    echo '<span class=', $access, '>', $access, '</span> ';
 
     if ($elm->isAbstract()) {
-      $sig .= '<span class=abstract>abstract</span> ';
+      echo '<span class=abstract>abstract</span> ';
     }
 
     if ($elm->isStatic()) {
-      $sig .= '<span class=static>static</span> ';
+      echo '<span class=static>static</span> ';
     }
 
     if ($elm->isFinal()) {
-      $sig .= '<span class=final>final</span> ';
+      echo '<span class=final>final</span> ';
     }
 
-    $sig .= $elm->returnTypeAsString();
-    $sig .= " <strong>{$elm->name()}</strong> ";
-    $sig .= $elm->flatSignature();
-    $sig .= '</code>';
+    echo '<span class=type>', $elm->returnTypeAsString(), '</span>';
+    echo ' <strong>', $elm->name(), '</strong> ';
+    echo $elm->flatSignature();
+    echo '</code>';
 
-    return $sig;
+    return ob_get_clean();
   }
 
 }
