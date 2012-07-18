@@ -1,0 +1,15 @@
+.source-code .code-line:hover {
+  background-color: #E69C68;
+  width: 100%;
+}
+.source-code .line-number {
+  display: inline-block;
+  width: 3em;
+
+  text-align: right;
+
+  background-color: rgba(0, 0, 0, 0.3);
+  border-right: 1px solid #318120;
+  padding-right: 0.25em;
+  margin-right: 1em;
+}

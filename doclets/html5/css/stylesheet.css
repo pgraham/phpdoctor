@@ -159,11 +159,11 @@ table.inherit th {
 td.type {
     text-align: right;
     vertical-align: top;
-    font-family: monospace;
+    font-family: 'Ubuntu Mono', monospace;
 }
 
 td p.name {
-    font-family: monospace;
+    font-family: 'Ubuntu Mono', monospace;
 }
 
 td p.description {

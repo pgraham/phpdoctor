@@ -26,12 +26,21 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 class SourceWriter extends HTMLWriter
 {
 
+  private static $_ESCAPE_CODE_OPTS; // = ENT_QUOTES | ENT_HTML5;
+  
+  private static function _init() {
+    if (self::$_ESCAPE_CODE_OPTS === null) {
+      self::$_ESCAPE_CODE_OPTS = ENT_QUOTES; // | ENT_HTML5; <- php 5.4
+    }
+  }
+
 	/** Parse the source files.
 	 *
 	 * @param Doclet doclet
 	 */
 	public function __construct(&$doclet) {
 		parent::__construct($doclet);
+    self::_init();
 		
 		$rootDoc =& $this->_doclet->rootDoc();
 		$phpdoctor =& $this->_doclet->phpdoctor();
@@ -77,8 +86,21 @@ class SourceWriter extends HTMLWriter
       if (class_exists('GeSHi')) {
         $geshi = new GeSHi($data[0], 'php');
         $source = $geshi->parse_code();
+
+        $lines = array();
+        foreach (explode("\n", $source) as $index => $line) {
+          $lines[] = '<span id="line'.($index + 1).'"></span>' . $line . "\n";
+        }
+        $source = implode("\n", $lines);
       } else {
-        $source = '<pre>'.$data[0].'</pre>';
+        $code = $this->_escapeCode($data[0]);
+        $lines = explode("\n", $code);
+        $numbered = array();
+        foreach ($lines as $idx => $line) {
+          $lineNum = $idx + 1;
+          $numbered[] = "<div id=line$lineNum class=code-line><span class=line-number>$lineNum</span>$line</div>";
+        }
+        $source = '<pre class=source-code><code>'. implode('', $numbered) . '</code></pre>';
       }
       
       ob_start();
@@ -90,10 +112,8 @@ class SourceWriter extends HTMLWriter
       }
       
       echo "<hr>\n\n";
-      
-      foreach (explode("\n", $source) as $index => $line) {
-        echo '<a name="line'.($index + 1).'"></a>'.$line."\n";
-      }
+
+      echo $source;
       
       $this->_output = ob_get_contents();
       ob_end_clean();
@@ -101,5 +121,9 @@ class SourceWriter extends HTMLWriter
       $this->write('source/'.strtolower($filename).'.html', $filename);
             
 		}
+  }
+
+  private function _escapeCode($code) {
+    return htmlspecialchars($code, self::$_ESCAPE_CODE_OPTS, 'UTF-8', false);
   }
 }
