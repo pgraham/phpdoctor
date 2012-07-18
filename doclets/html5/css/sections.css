@@ -5,14 +5,16 @@ div.class-detail {
   padding-bottom: 0.5em;
 }
 div.constant-detail,
-div.method-detail,
-div.global-detail {
+div.field-detail,
+div.global-detail,
+div.method-detail {
   border-top: 1px dashed #CCC;
   padding-top: 0.5em;
 }
 div.constant-detail:first-child,
-div.method-detail:first-child,
-div.global-detail:first-child {
+div.field-detail:first-child,
+div.global-detail:first-child,
+div.method-detail:first-child {
   padding-top: none;
   border-top: none;
 }

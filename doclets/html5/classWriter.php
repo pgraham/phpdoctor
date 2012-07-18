@@ -183,7 +183,9 @@ class ClassWriter extends HTMLWriter {
           foreach ($fields as $field) {
             $textTag = $field->tags('@text');
             echo '<tr>';
-            echo '<td class=type>', $field->modifiers(false), ' ', $field->typeAsString();
+            echo '<td class=type><code class=signature>';
+            echo $this->_fieldModifiers($field);
+            echo '</code>';
             echo '<td class=description>';
             echo '<p class=name><a href=#', $field->name(), '>';
             if (is_null($field->constantValue())) echo '$';
@@ -260,24 +262,11 @@ class ClassWriter extends HTMLWriter {
         }
 
         if ($fields) {
-          echo '<h2 id="detail_field">Field Detail</h2>', "\n";
+          echo '<h2 id="detail_field">Field Detail</h2><div>';
           foreach($fields as $field) {
-            $textTag = $field->tags('@text');
-            $type = $field->type();
-            $this->_sourceLocation($field);
-            echo '<h3 id="', $field->name(),'">', $field->name(), "</h3>\n";
-            echo '<code class="signature">', $field->modifiers(), ' ', $field->typeAsString(), ' <strong>';
-            if (is_null($field->constantValue())) echo '$';
-            echo $field->name(), '</strong>';
-            if (!is_null($field->value())) echo ' = ', htmlspecialchars($field->value());
-            echo "</code>\n";
-            echo '<div class="details">', "\n";
-            if ($textTag) {
-              echo $this->_processInlineTags($textTag);
-            }
-            $this->_processTags($field->tags());
-            echo "</div>\n\n";
+            echo $this->_fieldBlock($field);
           }
+          echo '</div>';
         }
         
         if ($constructor) {
@@ -494,6 +483,59 @@ class ClassWriter extends HTMLWriter {
       echo ' = ', htmlspecialchars($elm->value());
     }
     echo '</code>';
+
+    return ob_get_clean();
+  }
+
+  private function _fieldBlock(FieldDoc $elm) {
+    $textTag = $elm->tags('@text');
+    $type = $elm->type();
+
+    ob_start();
+
+    echo '<div class=field-detail>';
+    $this->_sourceLocation($elm);
+    echo '<h3 id=', $elm->name(),'>', $elm->name(), '</h3>';
+    echo $this->_fieldSignature($elm);
+    echo '<div class="details">', "\n";
+    if ($textTag) {
+      echo $this->_processInlineTags($textTag);
+    }
+    $this->_processTags($elm->tags());
+    echo '</div></div>';
+
+    return ob_get_clean();
+  }
+
+  private function _fieldModifiers(FieldDoc $elm) {
+    $access = $elm->access();
+
+    ob_start();
+
+    echo '<span class=', $access, '>', $access, '</span> ';
+    if ($elm->isStatic()) {
+      echo '<span class=static>static</span> ';
+    }
+
+    if ($elm->isFinal()) {
+      echo '<span class=final>final</span> ';
+    }
+
+    echo '<span class=type', $elm->typeAsString(), '</span>';
+
+    return ob_get_clean();
+  }
+
+  private function _fieldSignature(FieldDoc $elm) {
+    ob_start();
+
+    echo '<code class=signature>';
+    echo $this->_fieldModifiers($elm);
+    echo ' <strong>$', $elm->name(), '</strong>';
+    if (!is_null($elm->value())) {
+      echo ' = ', htmlspecialchars($elm->value());
+    }
+    echo "</code>\n";
 
     return ob_get_clean();
   }
