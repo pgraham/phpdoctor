@@ -57,7 +57,8 @@ dd {
   margin-left: 1.5em;
 }
 
-dd a {
+dd.implemented-interfaces a,
+dd.known-subclasses a {
   margin: 0 0.5em;
 }
 

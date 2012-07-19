@@ -98,10 +98,10 @@ class ClassWriter extends HTMLWriter {
         $implements = $class->interfaces();
         $subclasses = $class->subclasses();
         if (count($implements) > 0 || $subclasses) {
-          echo "<dl>\n";
+          echo '<dl>';
           if (count($implements) > 0) {
-            echo "<dt>All Implemented Interfaces:</dt>\n";
-            echo '<dd>';
+            echo '<dt>All Implemented Interfaces:';
+            echo '<dd class=implemented-interfaces>';
             foreach ($implements as $interfaceName) {
               $interface = $rootDoc->classNamed($interfaceName);
               if ($interface) {
@@ -114,12 +114,11 @@ class ClassWriter extends HTMLWriter {
                 echo $interfaceName;
               }
             }
-            echo "</dd>\n";
           }
         
           if ($subclasses) {
-            echo "<dt>All Known Subclasses:</dt>\n";
-            echo '<dd>';
+            echo '<dt>All Known Subclasses:';
+            echo '<dd class=known-subclasses>';
             foreach ($subclasses as $subclass) {
               echo '<a href=', $rootPath, $subclass->asPath(), '>';
               if ($subclass->packageName() != $class->packageName()) {
@@ -127,7 +126,6 @@ class ClassWriter extends HTMLWriter {
               }
               echo $subclass->name(), '</a> ';
             }
-            echo "</dd>\n";
           }
 
           echo "</dl>\n\n";
