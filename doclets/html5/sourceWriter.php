@@ -45,17 +45,7 @@ class SourceWriter extends HTMLWriter
 		$rootDoc =& $this->_doclet->rootDoc();
 		$phpdoctor =& $this->_doclet->phpdoctor();
 		
-    $this->_sections[] = array('title' => 'Overview', 'url' => 'index.html');
-    $this->_sections[] = array('title' => 'Namespace');
-    $this->_sections[] = array('title' => 'Class');
-    //$this->_sections[3] = array('title' => 'Use');
-    if ($phpdoctor->getOption('tree')) {
-      $this->_sections[] = array('title' => 'Tree', 'url' => 'overview-tree.html');
-    }
-    $this->_sections[] = array('title' => 'Files', 'url' => 'overview-files.html', 'selected' => TRUE);
-    $this->_sections[] = array('title' => 'Deprecated', 'url' => 'deprecated-list.html');
-    $this->_sections[] = array('title' => 'Todo', 'url' => 'todo-list.html');
-    $this->_sections[] = array('title' => 'Index', 'url' => 'index-all.html');
+    $this->_buildSections($phpdoctor);
         
 		$sources =& $rootDoc->sources();
         
@@ -82,6 +72,7 @@ class SourceWriter extends HTMLWriter
 		
 		foreach ($sources as $filename => $data) {
       $this->_depth = substr_count($filename, '/') + 1;
+      $this->_buildSections($phpdoctor, $filename);
       
       if (class_exists('GeSHi')) {
         $geshi = new GeSHi($data[0], 'php');
@@ -121,6 +112,29 @@ class SourceWriter extends HTMLWriter
       $this->write('source/'.strtolower($filename).'.html', $filename);
             
 		}
+  }
+
+  private function _buildSections($phpdoctor, $filename = null) {
+    $this->_sections = array();
+    $this->_sections[] = array('title' => 'Overview', 'url' => 'index.html');
+    if ($filename !== null) {
+      $path = str_replace(DIRECTORY_SEPARATOR, '/', dirname($filename));
+      $htmlfilename = strtolower(basename($filename, '.php')) . '.html';
+      $this->_sections[] = array(
+        'title' => 'Namespace',
+        'url' => "$path/$htmlfilename"
+      );
+    } else {
+      $this->_sections[] = array('title' => 'Namespace');
+    }
+    $this->_sections[] = array('title' => 'Class');
+    if ($phpdoctor->getOption('tree')) {
+      $this->_sections[] = array('title' => 'Tree', 'url' => 'overview-tree.html');
+    }
+    $this->_sections[] = array('title' => 'Files', 'url' => 'overview-files.html', 'selected' => TRUE);
+    $this->_sections[] = array('title' => 'Deprecated', 'url' => 'deprecated-list.html');
+    $this->_sections[] = array('title' => 'Todo', 'url' => 'todo-list.html');
+    $this->_sections[] = array('title' => 'Index', 'url' => 'index-all.html');
   }
 
   private function _escapeCode($code) {
