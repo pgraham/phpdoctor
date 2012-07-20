@@ -86,11 +86,9 @@ class Tag
 	
 	/** Get the value of the tag as raw data, without any text processing applied.
 	 *
-	 * @param Doclet doclet
 	 * @return str
 	 */
-	function text($doclet)
-    {
+	function text() {
 		return $this->_text;
 	}
 	
