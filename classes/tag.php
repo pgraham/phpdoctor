@@ -88,7 +88,7 @@ class Tag
 	 *
 	 * @return str
 	 */
-	function text() {
+	function text($doclet) {
 		return $this->_text;
 	}
 	

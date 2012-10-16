@@ -297,18 +297,18 @@ class HTMLWriter
           }
         }
         if ($hasText) {
-          $tagString .= '<dt>'.$tag[0]->displayName().":</dt>\n";
+          $tagString .= '<dt>'.$tag[0]->displayName();
           foreach ($tag as $tagFromGroup) {
-            $tagString .= '<dd>'.$this->_doclet->formatter->toFormattedText($tagFromGroup->text())."</dd>\n";
+            $tagString .= '<dd>'.$this->_doclet->formatter->toFormattedText($tagFromGroup->text($this->_doclet));
           }
         }
       } else {
-        $text = $this->_doclet->formatter->toFormattedText($tag->text());
+        $text = $this->_doclet->formatter->toFormattedText($tag->text($this->_doclet));
         if ($text != '') {
-          $tagString .= '<dt>'.$tag->displayName().":</dt>\n";
-          $tagString .= '<dd>'.$text."</dd>\n";
+          $tagString .= '<dt>'.$tag->displayName();
+          $tagString .= '<dd>'.$text;
         } elseif ($tag->displayEmpty()) {
-          $tagString .= '<dt>'.$tag->displayName().".</dt>\n";
+          $tagString .= '<dt>'.$tag->displayName();
         }
       }
     }
